@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B1 Cambridge Exam Center</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/image-viewer.css">
+</head>
+<body>
+
+    <header>
+        <button id="mobile-menu-toggle" class="mobile-menu-toggle" type="button" aria-label="Mở menu" aria-expanded="false" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="header-actions">
+            <button id="auth-action-btn" class="top-auth-btn" onclick="handleAuthAction()">Đăng nhập</button>
+            <button class="top-random-btn" onclick="randomTest()">Test ngẫu nhiên</button>
+            <button class="top-shuffle-btn" onclick="shuffleTestParts()">Xáo trộn đề</button>
+            <a class="top-rank-btn" href="rank.html">Bảng xếp hạng</a>
+            <a class="top-rank-btn" href="personal.html">Bảng cá nhân</a>
+        </div>
+        <div class="logo">từ 9 đến 14 là thi đầu ra</div>
+        <div class="header-actions header-actions-exam">
+            <nav>
+                <select id="test-selector" onchange="changeTest()">
+                    <option value="1" selected>Test 1</option>
+                    <option value="2">Test 2</option>
+                    <option value="3">Test 3</option>
+                    <option value="4">Test 4</option>
+                    <option value="5">Test 5</option>
+                    <option value="6">Test 6</option>
+                    <option value="7">Test 7</option>
+                    <option value="8">Test 8</option>
+                    <option value="9" style="color: red;">Test 9 CDR 1</option>
+                    <option value="10" style="color: red;">Test 10 CDR 2</option>
+                    <option value="11" style="color: red;">Test 11 CDR 5</option>
+                    <option value="12" style="color: red;">Test 12 CDR 6</option>
+                    <option value="13" style="color: red;">Test 13 CDR 3</option>
+                    <option value="14" style="color: red;">Test 14 CDR 4</option>
+                </select>
+            </nav>
+            <button class="top-submit_the_test-btn" onclick="showSubmitModal()">Nộp bài</button>
+            <button class="top-submit_the_test-btn" onclick="resetExam()">Làm mới</button>
+            <a class="top-personal-btn" href="personal.html">Bảng cá nhân</a>
+            <div class="timer-wrap">
+                <div id="timer">Thời gian: 120:00</div>
+                <button id="start-timer-btn" class="start-timer-btn" onclick="startExamTimer()">Start</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <section class="image-viewer-wrap" id="image-viewer" data-pattern="{section}-test{test}-{n}">
+            <!-- Images will be loaded here by image-viewer.js -->
+        </section>
+
+        <section class="answer-container">
+            <h2>Phiếu Đáp Án</h2>
+            <div id="questions-area">
+                </div>
+            <div class="action-row">
+                <button class="btn-submit" onclick="showSubmitModal()">Nộp bài</button>
+                <button class="btn-reset" onclick="resetExam()">Reset làm bài mới</button>
+            </div>
+        </section>
+    </main>
+
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <h2>Kết Quả</h2>
+            <p id="score-display"></p>
+            <input type="text" id="userName" placeholder="Nhập tên của bạn...">
+            <p id="save-status" class="save-status" aria-live="polite"></p>
+            <div class="modal-btns">
+                <button onclick="saveScoreToFirebase()">Lưu & Xếp hạng</button>
+                <button onclick="closeModal()">Bỏ qua</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/script.js"></script>
+    <script src="js/image-viewer.js"></script>
+</body>
+</html>

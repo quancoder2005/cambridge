@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>B1 PET PREP - Bảng Xếp Hạng</title>
+	<style>
+		* { box-sizing: border-box; margin: 0; padding: 0; }
+
+		body {
+			min-height: 100vh;
+			font-family: "Segoe UI", sans-serif;
+			color: #163042;
+			background:
+				radial-gradient(circle at 10% 10%, rgba(29, 155, 240, 0.18), transparent 30%),
+				radial-gradient(circle at 90% 20%, rgba(31, 201, 138, 0.18), transparent 28%),
+				linear-gradient(160deg, #f3f9ff 0%, #edf7f2 100%);
+			padding: 24px;
+		}
+
+		.wrap {
+			width: min(960px, 100%);
+			margin: 0 auto;
+		}
+
+		.topbar {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 12px;
+			margin-bottom: 16px;
+		}
+
+		.title {
+			font-size: clamp(24px, 4vw, 34px);
+			font-weight: 800;
+			letter-spacing: 0.3px;
+		}
+
+		.subtitle {
+			margin-top: 4px;
+			color: #4c6678;
+			font-size: 14px;
+		}
+
+		.btn-back {
+			text-decoration: none;
+			background: #1d9bf0;
+			color: white;
+			padding: 10px 14px;
+			border-radius: 10px;
+			font-weight: 700;
+			white-space: nowrap;
+		}
+
+		.card {
+			background: rgba(255, 255, 255, 0.95);
+			border: 1px solid #d7e7f4;
+			border-radius: 16px;
+			padding: 14px;
+			box-shadow: 0 14px 28px rgba(22, 48, 66, 0.08);
+		}
+
+		.meta {
+			margin-bottom: 12px;
+			color: #587080;
+			font-size: 14px;
+		}
+
+		.filter-row {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			margin-bottom: 12px;
+		}
+
+		.filter-row label {
+			font-size: 14px;
+			font-weight: 700;
+			color: #345366;
+		}
+
+		.filter-row select {
+			padding: 8px 10px;
+			border-radius: 8px;
+			border: 1px solid #d1e2ef;
+			background: #fff;
+			color: #234457;
+		}
+
+		.table-wrap {
+			overflow-x: auto;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			min-width: 680px;
+		}
+
+		th,
+		td {
+			text-align: left;
+			padding: 10px 12px;
+			border-bottom: 1px solid #e6eef5;
+			font-size: 14px;
+		}
+
+		th {
+			background: #f3f8fd;
+			color: #345366;
+			font-weight: 700;
+		}
+
+		tbody tr:hover {
+			background: #f8fcff;
+		}
+
+		.rank-pill {
+			display: inline-block;
+			min-width: 34px;
+			text-align: center;
+			padding: 4px 8px;
+			border-radius: 999px;
+			background: #e7f3ff;
+			color: #1d5f8a;
+			font-weight: 700;
+		}
+
+		.status {
+			margin-top: 10px;
+			font-size: 14px;
+			color: #516a79;
+		}
+
+		.status.error {
+			color: #a0182f;
+		}
+
+		@media (max-width: 680px) {
+			body { padding: 14px; }
+			.topbar { align-items: flex-start; flex-direction: column; }
+			.btn-back { width: 100%; text-align: center; }
+			.card { padding: 10px; }
+		}
+	</style>
+</head>
+<body>
+	<main class="wrap">
+		<div class="topbar">
+			<div>
+				<h1 class="title">Bảng Xếp Hạng</h1>
+				<p class="subtitle">Điểm theo thang 5.00 (Reading 2.50 + Listening 2.50)</p>
+			</div>
+			<a class="btn-back" href="index.html">Quay Lại Làm Bài</a>
+		</div>
+
+		<section class="card">
+			<p class="meta" id="meta-text">Đang tải dữ liệu...</p>
+			<div class="filter-row">
+				<label for="test-filter">Lọc theo test</label>
+				<select id="test-filter">
+					<option value="all">Tất cả</option>
+					<option value="1">Test 1</option>
+					<option value="2">Test 2</option>
+					<option value="3">Test 3</option>
+					<option value="4">Test 4</option>
+					<option value="5">Test 5</option>
+					<option value="6">Test 6</option>
+					<option value="7">Test 7</option>
+					<option value="8">Test 8</option>
+					<option value="9">Test 9</option>
+					<option value="10">Test 10</option>
+					<option value="11">Test 11</option>
+					<option value="12">Test 12</option>
+					<option value="13">Test 13</option>
+					<option value="14">Test 14</option>
+				</select>
+			</div>
+			<div class="table-wrap">
+				<table>
+					<thead>
+						<tr>
+							<th>Hạng</th>
+							<th>Tên</th>
+							<th>Điểm</th>
+							<th>Reading</th>
+							<th>Listening</th>
+							<th>Test</th>
+							<th>Thời gian</th>
+						</tr>
+					</thead>
+					<tbody id="rank-body">
+						<tr>
+							<td colspan="7">Đang tải...</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<p id="status" class="status"></p>
+		</section>
+	</main>
+
+	<script type="module">
+		import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+		import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+		import { firebaseConfig } from "./js/firebase-config.js";
+
+		const rankBody = document.getElementById("rank-body");
+		const status = document.getElementById("status");
+		const metaText = document.getElementById("meta-text");
+		const testFilter = document.getElementById("test-filter");
+		let allBestRows = [];
+
+		function toPoint(v) {
+			const n = typeof v === "number" ? v : Number(v);
+			if (!Number.isFinite(n)) return "0.00";
+			return n.toFixed(2);
+		}
+
+		function toScoreNumber(v) {
+			const n = typeof v === "number" ? v : Number(v);
+			return Number.isFinite(n) ? n : 0;
+		}
+
+		function toTimestamp(v) {
+			const t = new Date(v || 0).getTime();
+			return Number.isFinite(t) ? t : 0;
+		}
+
+		function normalizeName(value) {
+			return (value || "").trim().toLowerCase().replace(/\s+/g, " ");
+		}
+
+		function getRankingUserKey(record) {
+			const userId = typeof record?.userId === "string" ? record.userId.trim() : "";
+			if (userId) return `id:${userId}`;
+
+			const name = typeof record?.name === "string" ? normalizeName(record.name) : "";
+			return `name:${name || "anonymous"}`;
+		}
+
+		function getRankingTestKey(record) {
+			const test = record?.test;
+			if (test == null) return "unknown";
+			const key = String(test).trim();
+			return key || "unknown";
+		}
+
+		function getBestRankingsByUserAndTest(records) {
+			const map = new Map();
+
+			records.forEach((record) => {
+				const compositeKey = `${getRankingUserKey(record)}|test:${getRankingTestKey(record)}`;
+				const prev = map.get(compositeKey);
+
+				if (!prev) {
+					map.set(compositeKey, record);
+					return;
+				}
+
+				const prevScore = toScoreNumber(prev.score);
+				const currentScore = toScoreNumber(record.score);
+				if (currentScore > prevScore) {
+					map.set(compositeKey, record);
+					return;
+				}
+
+				if (currentScore === prevScore && toTimestamp(record.date) > toTimestamp(prev.date)) {
+					map.set(compositeKey, record);
+				}
+			});
+
+			return Array.from(map.values());
+		}
+
+		function toTimeText(dateValue) {
+			if (!dateValue) return "-";
+			if (typeof dateValue?.toDate === "function") {
+				return dateValue.toDate().toLocaleString("vi-VN");
+			}
+
+			const parsed = new Date(dateValue);
+			if (Number.isNaN(parsed.getTime())) return "-";
+			return parsed.toLocaleString("vi-VN");
+		}
+
+		function getSelectedTest() {
+			return testFilter?.value || "all";
+		}
+
+		function applyTestFilter() {
+			const selectedTest = getSelectedTest();
+			const filteredRows = allBestRows.filter((row) => {
+				if (selectedTest === "all") return true;
+				return String(row.test || "") === selectedTest;
+			});
+
+			metaText.textContent = `Hiển thị ${filteredRows.length} / ${allBestRows.length} bản ghi (mỗi người/mỗi test lấy điểm cao nhất)`;
+
+			if (filteredRows.length === 0) {
+				rankBody.innerHTML = '<tr><td colspan="7">Không có dữ liệu cho bộ lọc đã chọn.</td></tr>';
+				status.textContent = "";
+				return;
+			}
+
+			rankBody.innerHTML = filteredRows
+				.map((d, idx) => `
+					<tr>
+						<td><span class="rank-pill">#${idx + 1}</span></td>
+						<td>${d.name || "Ẩn danh"}</td>
+						<td><strong>${toPoint(d.score)}/5.00</strong></td>
+						<td>${d.readingScore != null ? `${toPoint(d.readingScore)}/2.50` : "-"}</td>
+						<td>${d.listeningScore != null ? `${toPoint(d.listeningScore)}/2.50` : "-"}</td>
+						<td>Test ${d.test || "-"}</td>
+						<td>${toTimeText(d.date)}</td>
+					</tr>
+				`)
+				.join("");
+
+			status.classList.remove("error");
+			status.textContent = "Đã tải xong bảng xếp hạng.";
+		}
+
+		async function loadRanking() {
+			if (!firebaseConfig || !firebaseConfig.apiKey) {
+				metaText.textContent = "Chưa cấu hình Firebase.";
+				rankBody.innerHTML = '<tr><td colspan="7">Cần dán firebaseConfig để xem xếp hạng.</td></tr>';
+				status.textContent = "";
+				return;
+			}
+
+			try {
+				const app = initializeApp(firebaseConfig);
+				const db = getDatabase(app);
+
+				const snapshot = await get(ref(db, "rankings"));
+				const rows = [];
+
+				snapshot.forEach((docSnap) => {
+					const value = docSnap.val();
+					if (value && typeof value === "object") {
+						rows.push(value);
+					}
+				});
+				allBestRows = getBestRankingsByUserAndTest(rows);
+				allBestRows.sort((a, b) => toScoreNumber(b.score) - toScoreNumber(a.score));
+
+				if (allBestRows.length === 0) {
+					rankBody.innerHTML = '<tr><td colspan="7">Chưa có dữ liệu xếp hạng.</td></tr>';
+					metaText.textContent = "Hiển thị 0 / 0 bản ghi";
+					status.textContent = "";
+					return;
+				}
+
+				applyTestFilter();
+			} catch (error) {
+				console.error(error);
+				metaText.textContent = "Lỗi tải dữ liệu.";
+				rankBody.innerHTML = '<tr><td colspan="7">Không thể tải bảng xếp hạng.</td></tr>';
+				status.textContent = "Kiểm tra lại firebaseConfig hoặc quyền Firestore.";
+				status.classList.add("error");
+			}
+		}
+
+		testFilter.addEventListener("change", applyTestFilter);
+
+		loadRanking();
+	</script>
+</body>
+</html>

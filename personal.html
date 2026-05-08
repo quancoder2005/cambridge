@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Bảng điểm cá nhân</title>
+    <link rel="stylesheet" href="css/personal-scores.css">
+</head>
+<body>
+    <header class="personal-header">
+        <a class="back-link" href="index.html">← Trở về</a>
+        <h1>Bảng điểm cá nhân</h1>
+        <div id="user-area"></div>
+    </header>
+
+    <main class="personal-main">
+        <section id="login-section" class="card">
+            <h2>Đăng nhập</h2>
+            <p id="login-note">Đăng nhập bằng tên để xem bảng điểm cá nhân của bạn.</p>
+            <input id="username-input" placeholder="Nhập tên (vd: Nguyen)" />
+            <button id="login-btn">Đăng nhập</button>
+        </section>
+
+        <section id="scores-section" class="card" style="display:none;">
+            <h2>Bảng điểm của <span id="owner-name"></span></h2>
+            <div class="scores-actions">
+                <!-- <label for="test-filter">Lọc theo test</label> -->
+                <select id="test-filter">
+                    <option value="all">Tất cả</option>
+                    <option value="1">Test 1</option>
+                    <option value="2">Test 2</option>
+                    <option value="3">Test 3</option>
+                    <option value="4">Test 4</option>
+                    <option value="5">Test 5</option>
+                    <option value="6">Test 6</option>
+                    <option value="7">Test 7</option>
+                    <option value="8">Test 8</option>
+                    <option value="9">Test 9</option>
+                    <option value="10">Test 10</option>
+                    <option value="11">Test 11</option>
+                    <option value="12">Test 12</option>
+                    <option value="13">Test 13</option>
+                    <option value="14">Test 14</option>
+                </select>
+                <button id="refresh-btn">Làm mới</button>
+                <button id="clear-btn">Xóa tất cả</button>
+            </div>
+            <table id="scores-table">
+                <thead>
+                    <tr><th>Ngày</th><th>Bài</th><th>Tổng</th><th>Reading</th><th>Listening</th><th></th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+    </main>
+
+    <script>window.SKIP_APP_INIT = true;</script>
+    <script type="module" src="js/script.js"></script>
+    <script src="js/personal-scores.js"></script>
+</body>
+</html>

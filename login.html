@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>B1 PET PREP - Đăng nhập</title>
+	<link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+	<main class="auth-wrap">
+		<section class="auth-card">
+			<p class="eyebrow">B1 PET PREP</p>
+			<h1>Đăng nhập / Tạo tài khoản</h1>
+			<p class="subtitle">Dùng tên đầy đủ và mật khẩu để tạo tài khoản hoặc đăng nhập.</p>
+
+			<div class="form-grid">
+				<label>
+					<span>Họ và tên</span>
+					<input id="fullName" type="text" placeholder="Ví dụ: Nguyễn Văn A">
+				</label>
+
+				<label>
+					<span>Mật khẩu</span>
+					<input id="password" type="password" placeholder="Nhập mật khẩu">
+				</label>
+			</div>
+
+			<div class="actions">
+				<button type="button" class="btn btn-secondary" onclick="handleAuth('register')">Tạo tài khoản</button>
+				<button type="button" class="btn btn-primary" onclick="handleAuth('login')">Đăng nhập</button>
+			</div>
+			<p id="auth-status" class="auth-status" aria-live="polite"></p>
+
+			<p class="tip">Sau khi đăng nhập thành công, hệ thống sẽ chuyển sang trang làm bài.</p>
+			<!-- <a class="back-link" href="index.html">Vào thẳng trang làm bài</a> -->
+		</section>
+	</main>
+
+	<script type="module" src="js/login.js"></script>
+</body>
+</html>

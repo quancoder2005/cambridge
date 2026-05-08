@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>B1 PET PREP - Admin</title>
+	<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+	<main class="page-shell">
+		<section class="hero-card">
+			<div class="hero-copy">
+				<p class="eyebrow">Admin Dashboard</p>
+				<h1>Quản lý bảng xếp hạng</h1>
+				<p class="hero-text">Đăng nhập để xem toàn bộ danh sách bài làm, lọc theo test và tìm theo tên.</p>
+				<div id="view-tabs" class="view-tabs hidden" role="tablist" aria-label="Chọn màn hình quản lý">
+					<button id="tab-scores" class="btn btn-tab active" type="button" data-view="scores" role="tab" aria-selected="true">Quản lý điểm</button>
+					<button id="tab-accounts" class="btn btn-tab" type="button" data-view="accounts" role="tab" aria-selected="false">Quản lý tài khoản</button>
+				</div>
+			</div>
+
+			<div id="login-panel" class="panel login-panel">
+				<h2>Đăng nhập Admin</h2>
+				<p class="panel-desc">Tài khoản: <strong>admin</strong> - Mật khẩu: <strong>1234</strong></p>
+				<form id="login-form" class="login-form">
+					<label>
+						<span>Tài khoản</span>
+						<input id="username" type="text" autocomplete="username" placeholder="Nhập username">
+					</label>
+					<label>
+						<span>Mật khẩu</span>
+						<input id="password" type="password" autocomplete="current-password" placeholder="Nhập password">
+					</label>
+					<button type="submit" class="btn btn-primary">Đăng nhập</button>
+					<p id="login-error" class="error-text" aria-live="polite"></p>
+				</form>
+			</div>
+		</section>
+
+		<section id="dashboard" class="dashboard hidden">
+			<div class="toolbar panel">
+				<div class="toolbar-head">
+					<div>
+						<h2 id="dashboard-title">Danh sách bài làm</h2>
+						<p id="summary-text" class="summary-text">Đang tải dữ liệu...</p>
+					</div>
+					<div class="toolbar-actions">
+						<button id="refresh-btn" class="btn btn-secondary" type="button">Tải lại</button>
+						<button id="logout-btn" class="btn btn-ghost" type="button">Đăng xuất</button>
+					</div>
+				</div>
+
+				<div class="filters">
+					<label id="test-filter-group">
+						<span>Lọc theo test</span>
+						<select id="test-filter">
+							<option value="all">Tất cả</option>
+							<option value="1">Test 1</option>
+							<option value="2">Test 2</option>
+							<option value="3">Test 3</option>
+							<option value="4">Test 4</option>
+							<option value="5">Test 5</option>
+							<option value="6">Test 6</option>
+							<option value="7">Test 7</option>
+							<option value="8">Test 8</option>
+							<option value="9">Test 9</option>
+							<option value="10">Test 10</option>
+							<option value="11">Test 11</option>
+							<option value="12">Test 12</option>
+							<option value="13">Test 13</option>
+							<option value="14">Test 14</option>
+						</select>
+					</label>
+					<label class="search-field">
+						<span id="search-label">Tìm theo tên</span>
+						<input id="name-search" type="search" placeholder="Nhập tên học viên...">
+					</label>
+				</div>
+			</div>
+
+			<div id="scores-panel" class="panel table-panel">
+				<div class="table-wrap">
+					<table>
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Tên</th>
+								<th>Điểm</th>
+								<th>Reading</th>
+								<th>Listening</th>
+								<th>Test</th>
+								<th>Ngày nộp</th>
+								<th>Key</th>
+								<th>Thao tác</th>
+							</tr>
+						</thead>
+						<tbody id="admin-table-body">
+							<tr>
+								<td colspan="9" class="empty-cell">Đang tải dữ liệu...</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<p id="status-text" class="status-text"></p> 
+			</div>
+
+			<div id="accounts-panel" class="panel table-panel hidden">
+				<div class="table-wrap">
+					<table>
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>ID tài khoản</th>
+								<th>Tên tài khoản đăng nhập</th>
+								<th>Mật khẩu</th>
+								<th>Ngày tạo</th>
+								<th>Số lần làm bài</th>
+								<th>Thao tác</th>
+							</tr>
+						</thead>
+						<tbody id="accounts-table-body">
+							<tr>
+								<td colspan="7" class="empty-cell">Đang tải dữ liệu...</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<p id="accounts-status-text" class="status-text"></p>
+			</div>
+		</section>
+	</main>
+
+	<script type="module" src="js/admin.js"></script>
+</body>
+</html>

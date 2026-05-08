@@ -1,0 +1,110 @@
+/* Image Viewer styles (separate from index styles) */
+.image-viewer-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  background: #525659;
+  flex: 7 1 0;
+  --viewer-zoom: 1;
+}
+.image-viewer-wrap:empty {
+  display: none;
+}
+
+/* Top controls */
+.image-viewer-controls-top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px;
+  background: #525659;
+  border-bottom: 1px solid #444;
+  flex-wrap: wrap;
+}
+
+.image-viewer-btn-zoom {
+  padding: 8px 12px;
+  background: #0066cc;
+  color: #fff;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  min-width: 48px;
+}
+
+.image-viewer-btn-zoom:hover {
+  background: #0052a3;
+}
+
+.image-viewer-counter {
+  color: #fff;
+  font-weight: 600;
+  min-width: 64px;
+  text-align: center;
+}
+
+.image-viewer-section-title {
+  width: 100%;
+  margin: 10px 0 6px;
+  padding: 0 12px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Gallery - stack images vertically */
+.image-viewer-gallery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 8px;
+}
+
+.image-viewer-empty-section {
+  width: 100%;
+  margin: 0 0 10px;
+  padding: 14px 12px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px dashed rgba(255, 255, 255, 0.35);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.image-viewer-item {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  background: #fff;
+  padding: 8px;
+  border-radius: 4px;
+  overflow: auto;
+}
+
+.image-viewer-page {
+  width: calc(95% * var(--viewer-zoom));
+  max-width: none;
+  height: auto;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 700px) {
+  .image-viewer-page {
+    width: calc(100% * var(--viewer-zoom));
+  }
+  .image-viewer-item {
+    margin-bottom: 8px;
+    padding: 4px;
+  }
+  .image-viewer-controls-top {
+    gap: 8px;
+    padding: 8px;
+  }
+}
