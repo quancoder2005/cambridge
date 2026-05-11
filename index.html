@@ -22,8 +22,8 @@
             <a class="top-rank-btn" href="rank.html">Bảng xếp hạng</a>
             <a class="top-rank-btn" href="personal.html">Bảng cá nhân</a>
         </div>
-        <div class="logo">từ 9 đến 14 là thi đầu ra</div>
-        <div class="header-actions header-actions-exam">
+        <div class="logo">B1</div>
+        <div class="header-test-pick">
             <nav>
                 <select id="test-selector" onchange="changeTest()">
                     <option value="1" selected>Test 1</option>
@@ -44,10 +44,11 @@
             </nav>
             <button class="top-submit_the_test-btn" onclick="showSubmitModal()">Nộp bài</button>
             <button class="top-submit_the_test-btn" onclick="resetExam()">Làm mới</button>
-            <a class="top-personal-btn" href="personal.html">Bảng cá nhân</a>
+            <button id="start-timer-btn" class="start-timer-btn" onclick="startExamTimer()">Start</button>
+        </div>
+        <div class="header-actions header-actions-exam">
             <div class="timer-wrap">
                 <div id="timer">Thời gian: 120:00</div>
-                <button id="start-timer-btn" class="start-timer-btn" onclick="startExamTimer()">Start</button>
             </div>
         </div>
     </header>
