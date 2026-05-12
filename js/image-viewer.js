@@ -27,28 +27,18 @@ function applyZoom(container, zoomLevel){
 async function probeImagesForPattern(test, section, pattern){
   const found = [];
   for(let n=1;n<=MAX_ATTEMPTS;n++){
-    const indexVariants = [String(n).padStart(2, '0'), String(n)];
-    let matched = false;
+    const indexValue = String(n);
+    const filename = pattern
+      .replace('{section}', section)
+      .replace('{test}', test)
+      .replace('{n}', indexValue) + '.png';
+    const src = IMAGE_PATH + 'test' + test + '/' + filename;
 
-    for (const indexValue of indexVariants) {
-      const filename = pattern
-        .replace('{section}', section)
-        .replace('{test}', test)
-        .replace('{n}', indexValue) + '.png';
-      const src = IMAGE_PATH + 'test' + test + '/' + filename;
-
-      try{
-        await makeImg(src);
-        found.push({src,filename});
-        matched = true;
-        break;
-      }catch(e){
-        // try the next index format
-      }
-    }
-
-    if (!matched && found.length > 0) {
-      break;
+    try{
+      await makeImg(src);
+      found.push({src,filename});
+    }catch(e){
+      if (found.length > 0) break;
     }
   }
 
