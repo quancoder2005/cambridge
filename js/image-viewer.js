@@ -150,6 +150,20 @@ async function loadForTest(test){
   const container = el('#image-viewer');
   if(!container) return;
   const loadToken = ++activeLoadToken;
+  
+  // Show loading state immediately
+  container.innerHTML = '';
+  container.classList.add('image-viewer-loading');
+  const loadingDiv = document.createElement('div');
+  const spinner = document.createElement('div');
+  spinner.className = 'spinner';
+  const text = document.createElement('span');
+  text.className = 'loading-text';
+  text.textContent = 'Đang tải...';
+  loadingDiv.appendChild(spinner);
+  loadingDiv.appendChild(text);
+  container.appendChild(loadingDiv);
+  
   const pattern = container.dataset.pattern || DEFAULT_PATTERN;
   const sectionResults = await Promise.all(
     VIEWER_SECTIONS.map(async (section) => {
@@ -166,7 +180,10 @@ async function loadForTest(test){
   if (loadToken !== activeLoadToken) return;
 
   const sections = sectionResults.filter(Boolean);
-
+  
+  // Remove loading state
+  container.classList.remove('image-viewer-loading');
+  
   renderViewer(container, sections);
 }
 

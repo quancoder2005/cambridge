@@ -249,7 +249,7 @@ window.handleAuthAction = function() {
 
 
 // Inline seek UI per listening button
-const inlineSeekMap = new Map(); // Map<button, {intervalId, seekEl, timeEl, audio}>
+const inlineSeekMap = new Map(); // Map<button, {intervalId, seekEl, audio}>
 
 function formatClock(sec){
     if (!Number.isFinite(sec)) return '00:00';
@@ -273,28 +273,15 @@ function createOrUpdateInlineSeek(button, audio){
         time.className = 'inline-audio-time';
         time.textContent = '00:00 / 00:00';
 
-        // playback speed selector
-        const speed = document.createElement('select');
-        speed.className = 'inline-audio-speed';
-        ['0.5','0.75','1.0','1.25','1.5','2.0'].forEach(s => {
-            const o = document.createElement('option'); o.value = s; o.textContent = s + '×';
-            if (String(Number(s)) === String(audio.playbackRate)) o.selected = true;
-            speed.appendChild(o);
-        });
-        speed.addEventListener('change', ()=>{
-            try{ audio.playbackRate = Number(speed.value); } catch(e){}
-        });
-
-        button.parentNode.insertBefore(seek, button);
         button.parentNode.insertBefore(time, button);
-        button.parentNode.insertBefore(speed, button);
+        button.parentNode.insertBefore(seek, button);
 
         const update = () => {
             if (!audio || !seek || !time) return;
             const dur = Number.isFinite(audio.duration) ? Math.floor(audio.duration) : 0;
             seek.max = dur;
             seek.value = Math.floor(audio.currentTime || 0);
-            time.textContent = `${formatClock(audio.currentTime||0)} / ${formatClock(audio.duration||0)}`;
+            time.textContent = `${formatClock(audio.currentTime || 0)} / ${formatClock(audio.duration || 0)}`;
         };
 
         const intervalId = setInterval(update, 250);
@@ -305,7 +292,7 @@ function createOrUpdateInlineSeek(button, audio){
             update();
         });
 
-        inlineSeekMap.set(button, { intervalId, seekEl: seek, timeEl: time, speedEl: speed, audio });
+        inlineSeekMap.set(button, { intervalId, seekEl: seek, timeEl: time, audio });
     } catch(e){/* ignore */}
 }
 
@@ -315,8 +302,7 @@ function removeInlineSeek(button){
         if (!entry) return;
         clearInterval(entry.intervalId);
         entry.seekEl.remove();
-        entry.timeEl.remove();
-        try { if (entry.speedEl) entry.speedEl.remove(); } catch(_) {}
+        if (entry.timeEl) entry.timeEl.remove();
         inlineSeekMap.delete(button);
     } catch(e){/* ignore */}
 }
@@ -514,19 +500,35 @@ function buildUniformExamPlan(testNumber) {
     };
 }
 
-function buildCompositeExamPlan() {
-    const shuffled = [...AVAILABLE_TEST_NUMBERS];
-
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+/**
+ * Build a composite exam plan by shuffling tests within a group.
+ * If `group` is 'A' use tests 1-8; if 'B' use tests 9-14; if null use all available tests.
+ */
+function buildCompositeExamPlan(group = null) {
+    let pool;
+    if (group === 'A') {
+        pool = Array.from({length: 8}, (_, i) => i + 1); // 1..8
+    } else if (group === 'B') {
+        pool = Array.from({length: 6}, (_, i) => i + 9); // 9..14
+    } else {
+        pool = [...AVAILABLE_TEST_NUMBERS];
     }
 
+    // shuffle pool
+    for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+
+    // ensure we have at least 4 values (group B has 6 entries so OK)
+    const take = (arr, n) => arr.slice(0, n).map(String);
+    const chosen = take(pool, 4);
+
     return {
-        reading: String(shuffled[0]),
-        writing: String(shuffled[1]),
-        listening: String(shuffled[2]),
-        speaking: String(shuffled[3]),
+        reading: chosen[0] || '1',
+        writing: chosen[1] || (chosen[0] || '1'),
+        listening: chosen[2] || (chosen[0] || '1'),
+        speaking: chosen[3] || (chosen[0] || '1'),
     };
 }
 
@@ -586,9 +588,13 @@ function renderListeningAudioButton(partKey, testKey) {
             class="listen-audio-btn"
             data-audio-part="${partNumber}"
             data-audio-test="${testNumber}"
-            aria-label="Phát audio Part ${partNumber} ${testInfoText}"
-            title="Phát audio Part ${partNumber} (${testInfoText})"
-        >&#128266;</button>
+            data-title-play="Chạy audio Part ${partNumber} (${testInfoText})"
+            data-title-pause="Dừng audio Part ${partNumber} (${testInfoText})"
+            data-aria-play="Chạy audio Part ${partNumber} ${testInfoText}"
+            data-aria-pause="Dừng audio Part ${partNumber} ${testInfoText}"
+            aria-label="Chạy audio Part ${partNumber} ${testInfoText}"
+            title="Chạy audio Part ${partNumber} (${testInfoText})"
+        >▶</button>
     `;
 }
 
@@ -618,7 +624,25 @@ async function probeFirstReachable(urls, timeoutMs = 3000) {
 function resetActiveListeningButtonState() {
     if (!activeListeningAudioButton) return;
     activeListeningAudioButton.classList.remove("playing", "missing");
+    activeListeningAudioButton.textContent = '▶';
+    activeListeningAudioButton.title = activeListeningAudioButton.dataset.titlePlay || activeListeningAudioButton.title;
+    activeListeningAudioButton.setAttribute('aria-label', activeListeningAudioButton.dataset.ariaPlay || 'Chạy audio');
     activeListeningAudioButton = null;
+}
+
+function setActiveListeningButtonPlaying(button, isPlaying) {
+    if (!button) return;
+    if (isPlaying) {
+        button.classList.add("playing");
+        button.textContent = '⏸';
+        button.title = button.dataset.titlePause || button.title;
+        button.setAttribute('aria-label', button.dataset.ariaPause || 'Dừng audio');
+    } else {
+        button.classList.remove("playing");
+        button.textContent = '▶';
+        button.title = button.dataset.titlePlay || button.title;
+        button.setAttribute('aria-label', button.dataset.ariaPlay || 'Chạy audio');
+    }
 }
 
 function stopListeningAudioPlayback() {
@@ -635,6 +659,7 @@ function stopListeningAudioPlayback() {
 
 function markAudioMissing(button) {
     button.classList.remove("playing");
+    button.textContent = '▶';
     button.classList.add("missing");
     setTimeout(() => button.classList.remove("missing"), 1200);
 }
@@ -649,7 +674,7 @@ async function playListeningAudioWithFallback(candidates, button) {
         activeListeningAudio = audio;
         activeListeningAudioButton = button;
         button.classList.remove("missing");
-        button.classList.add("playing");
+        setActiveListeningButtonPlaying(button, true);
         try { createOrUpdateInlineSeek(button, audio); } catch(e){}
 
         audio.addEventListener("ended", () => {
@@ -683,7 +708,17 @@ function bindListeningAudioButtons() {
             if (!partNumber) return;
 
             if (activeListeningAudioButton === button && activeListeningAudio) {
-                stopListeningAudioPlayback();
+                if (activeListeningAudio.paused) {
+                    activeListeningAudio.play().then(() => {
+                        setActiveListeningButtonPlaying(button, true);
+                    }).catch(e => {
+                        console.warn('[resumeListeningAudio] failed', e);
+                        markAudioMissing(button);
+                    });
+                } else {
+                    activeListeningAudio.pause();
+                    setActiveListeningButtonPlaying(button, false);
+                }
                 return;
             }
 
@@ -958,6 +993,13 @@ window.changeTest = function(preserveCurrentPlan = false) {
         applyExamPlan(buildUniformExamPlan(selectedTestNumber));
     }
     renderQuestions();
+
+    // Ensure image viewer updates to the active reading test.
+    const selector = document.getElementById('test-selector');
+    const testToLoad = selector ? selector.value : (currentExamPlan?.reading || '1');
+    if (typeof window.loadForTest === 'function') {
+        try { window.loadForTest(testToLoad); } catch (e) { console.warn('loadForTest failed', e); }
+    }
 }
 
 window.randomTest = function() {
@@ -972,9 +1014,14 @@ window.randomTest = function() {
 
 window.shuffleTestParts = function() {
     const selector = document.getElementById('test-selector');
-    const randomPlan = buildCompositeExamPlan();
-    selector.value = randomPlan.reading;
+    // Pick group A (1-8) or group B (9-14) at random
+    const group = Math.random() < 0.5 ? 'A' : 'B';
+    const randomPlan = buildCompositeExamPlan(group);
+    // Set selector to the chosen reading test number
+    if (selector) selector.value = String(randomPlan.reading);
     applyExamPlan(randomPlan);
+    // annotate for debugging what group was chosen
+    try { console.info('shuffleTestParts selected group', group, randomPlan); } catch(e) {}
     changeTest(true);
 }
 

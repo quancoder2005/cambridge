@@ -237,8 +237,8 @@ nav select {
 }
 
 .listen-audio-btn {
-    min-width: 36px;
-    height: 36px;
+    min-width: 40px;
+    height: 40px;
     border: 1px solid #c3d7e7;
     border-radius: 999px;
     background: #f2f9ff;
@@ -269,21 +269,6 @@ nav select {
     width: 140px;
     margin-right: 8px;
     vertical-align: middle;
-}
-.inline-audio-time {
-    margin-right: 8px;
-    color: #e6eef3;
-    font-size: 12px;
-    min-width: 72px;
-}
-
-.inline-audio-speed {
-    margin-right: 8px;
-    font-size: 12px;
-    padding: 3px 6px;
-    border-radius: 6px;
-    border: 1px solid #ccd5dd;
-    background: #ffffff;
 }
 
 .question-row {
