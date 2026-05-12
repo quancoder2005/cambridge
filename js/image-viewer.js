@@ -159,7 +159,7 @@ async function loadForTest(test){
   spinner.className = 'spinner';
   const text = document.createElement('span');
   text.className = 'loading-text';
-  text.textContent = 'Đang tải...';
+  text.textContent = '...';
   loadingDiv.appendChild(spinner);
   loadingDiv.appendChild(text);
   container.appendChild(loadingDiv);

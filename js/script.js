@@ -121,6 +121,7 @@ let hasExamStarted = false;
 let hasAutoSubmitted = false;
 let activeListeningAudio = null;
 let activeListeningAudioButton = null;
+let activeListeningRequestId = 0;
 
 function getCurrentUser() {
     try {
@@ -646,6 +647,7 @@ function setActiveListeningButtonPlaying(button, isPlaying) {
 }
 
 function stopListeningAudioPlayback() {
+    activeListeningRequestId += 1;
     if (activeListeningAudio) {
         activeListeningAudio.pause();
         activeListeningAudio.currentTime = 0;
@@ -667,7 +669,12 @@ function markAudioMissing(button) {
 async function playListeningAudioWithFallback(candidates, button) {
     try {
         stopListeningAudioPlayback();
+        const requestId = ++activeListeningRequestId;
+        if (requestId !== activeListeningRequestId) return;
+
         const url = await probeFirstReachable(candidates, 3000);
+        if (requestId !== activeListeningRequestId) return;
+
         const audio = new Audio(url);
         audio.preload = 'auto';
         audio.crossOrigin = 'anonymous';
@@ -693,6 +700,15 @@ async function playListeningAudioWithFallback(candidates, button) {
         }, { once: true });
 
         await audio.play();
+        if (requestId !== activeListeningRequestId) {
+            audio.pause();
+            audio.currentTime = 0;
+            if (activeListeningAudio === audio) {
+                activeListeningAudio = null;
+            }
+            try { removeInlineSeek(button); } catch(e){}
+            return;
+        }
     } catch (e) {
         console.warn('[playListeningAudioWithFallback] failed', e);
         markAudioMissing(button);
