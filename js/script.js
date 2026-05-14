@@ -2,6 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebas
 import { getDatabase, ref, push, set, get, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 import { firebaseConfig } from "./firebase-config.js";
 import answersBank from "../data/answers.js";
+import writingSamples from "../data/writing-samples.js";
 
 // Small on-page debug banner to help track init / render progress without console
 function updateDebug(msg) {
@@ -310,6 +311,19 @@ function removeInlineSeek(button){
 
 function normalizeText(value) {
     return (value || "").trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function escapeHtml(value) {
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
+function renderTextBlock(value) {
+    return escapeHtml(value).replace(/\n/g, "<br>");
 }
 
 function getAnswerVariants(expected) {
@@ -775,23 +789,44 @@ function getAnswerSectionRenderer(sectionKey, testKey) {
         return () => renderSkillSection(`Listening${testLabel}`, "listening", LISTENING_SCHEMA, testKey);
     }
 
-    return () => renderWritingSection(testLabel);
+    return () => renderWritingSection(testLabel, testKey);
 }
 
-function renderWritingSection(testLabel = "") {
+function renderWritingSample(partLabel, sample) {
+    if (!sample) return "";
+    const heading = sample.heading ? `<p><b>${escapeHtml(sample.heading)}</b></p>` : "";
+    return `
+        <div class="part-block">
+            <h4>${escapeHtml(partLabel)} - ${escapeHtml(sample.title || "")}</h4>
+            <p><i>${escapeHtml(sample.task || "")}</i></p>
+            ${heading}
+            <div class="writing-sample-content">${renderTextBlock(sample.answer || "")}</div>
+        </div>
+    `;
+}
+
+function renderWritingSection(testLabel = "", testKey = "") {
+    const sample = writingSamples?.[testKey];
+    const task1Title = sample?.part1?.title || "Task 1";
+    const task2Title = sample?.part2?.title || "Task 2";
+    const task3Title = sample?.part3?.title || "Task 3";
+    const task1Value = escapeHtml(sample?.part1?.answer || "");
+    const task2Value = escapeHtml(sample?.part2?.answer || "");
+    const task3Value = escapeHtml(sample?.part3?.answer || "");
+
     return `
         <h3 class="sheet-section-title">Writing${testLabel}</h3>
         <div class="part-block">
-            <h4>Task 1</h4>
-            <textarea id="writing-task1" class="writing-box" placeholder="Viết bài cho Task 1..."></textarea>
+            <h4>${escapeHtml(task1Title)}</h4>
+            <textarea id="writing-task1" class="writing-box" placeholder="Viết bài cho Task 1...">${task1Value}</textarea>
         </div>
         <div class="part-block">
-            <h4>Task 2</h4>
-            <textarea id="writing-task2" class="writing-box" placeholder="Viết bài cho Task 2..."></textarea>
+            <h4>${escapeHtml(task2Title)}</h4>
+            <textarea id="writing-task2" class="writing-box" placeholder="Viết bài cho Task 2...">${task2Value}</textarea>
         </div>
         <div class="part-block">
-            <h4>Task 3</h4>
-            <textarea id="writing-task3" class="writing-box" placeholder="Viết bài cho Task 3..."></textarea>
+            <h4>${escapeHtml(task3Title)}</h4>
+            <textarea id="writing-task3" class="writing-box" placeholder="Viết bài cho Task 3...">${task3Value}</textarea>
         </div>
     `;
 }
