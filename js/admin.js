@@ -91,12 +91,14 @@ function normalizeText(value) {
 
 function normalizeAccountFromUserNode(userId, userData) {
     const results = userData?.results && typeof userData.results === "object" ? Object.values(userData.results) : [];
+    const personalScores = userData?.personalScores && typeof userData.personalScores === "object" ? Object.values(userData.personalScores) : [];
     return {
         userId,
         displayName: userData?.displayName || userId,
         password: userData?.password || "",
         createdAt: userData?.createdAt || "",
         resultsCount: results.length,
+        personalScoresCount: personalScores.length,
     };
 }
 
@@ -213,7 +215,7 @@ function renderAccountsTable() {
     if (!activeAccounts.length) {
         accountsTableBody.innerHTML = `
             <tr>
-                <td colspan="7" class="empty-cell">Không có tài khoản phù hợp bộ lọc hiện tại.</td>
+                <td colspan="8" class="empty-cell">Không có tài khoản phù hợp bộ lọc hiện tại.</td>
             </tr>
         `;
         summaryText.textContent = `Hiển thị 0 / ${allAccounts.length} tài khoản`;
@@ -228,6 +230,7 @@ function renderAccountsTable() {
             <td>${account.password || "-"}</td>
             <td>${toTimeText(account.createdAt)}</td>
             <td>${account.resultsCount}</td>
+            <td>${account.personalScoresCount || 0}</td>
             <td>
                 <div class="row-actions">
                     <button class="btn btn-danger btn-row" type="button" data-delete-user-id="${account.userId || ""}">Xóa tài khoản</button>
@@ -291,7 +294,7 @@ async function loadAdminData() {
         `;
         accountsTableBody.innerHTML = `
             <tr>
-                <td colspan="7" class="empty-cell">Chưa cấu hình Firebase.</td>
+                <td colspan="8" class="empty-cell">Chưa cấu hình Firebase.</td>
             </tr>
         `;
         summaryText.textContent = "Không thể tải dữ liệu.";
@@ -356,7 +359,7 @@ async function loadAdminData() {
         `;
         accountsTableBody.innerHTML = `
             <tr>
-                <td colspan="7" class="empty-cell">Không thể tải danh sách tài khoản từ Realtime Database.</td>
+                <td colspan="8" class="empty-cell">Không thể tải danh sách tài khoản từ Realtime Database.</td>
             </tr>
         `;
         summaryText.textContent = "Lỗi tải dữ liệu.";
