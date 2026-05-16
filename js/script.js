@@ -1003,29 +1003,31 @@ function markAnswers() {
                             }
                         }
                     } else {
-                        // multiple choice: always highlight the correct option green
+                        // multiple choice: highlight user's choice (green if correct, red if wrong)
+                        // and show correct answer if user was wrong
                         const name = `${sectionKey}-${item.key}-${i}`;
-                        const inputs = document.getElementsByName(name) || [];
-                        let correctInput = null;
-                        for (let k = 0; k < inputs.length; k++) {
-                            const ip = inputs[k];
-                            if (isAnswerMatch(ip.value, expected)) {
-                                correctInput = ip;
-                                break;
-                            }
-                        }
-
-                        if (correctInput) {
-                            const correctSpan = correctInput.nextElementSibling;
-                            if (correctSpan) correctSpan.classList.add('answer-correct');
-                        }
-
                         const selected = document.querySelector(`input[name="${name}"]:checked`);
+                        
                         if (selected) {
+                            const isSelCorrect = isAnswerMatch(selected.value, expected);
                             const selSpan = selected.nextElementSibling;
                             if (selSpan) {
-                                const isSelCorrect = isAnswerMatch(selected.value, expected);
                                 selSpan.classList.add(isSelCorrect ? 'answer-correct' : 'answer-wrong');
+                            }
+                            
+                            // If user chose wrong, also highlight the correct answer in green
+                            if (!isSelCorrect) {
+                                const inputs = document.getElementsByName(name) || [];
+                                for (let k = 0; k < inputs.length; k++) {
+                                    const ip = inputs[k];
+                                    if (isAnswerMatch(ip.value, expected)) {
+                                        const correctSpan = ip.nextElementSibling;
+                                        if (correctSpan) {
+                                            correctSpan.classList.add('answer-correct');
+                                        }
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
