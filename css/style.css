@@ -264,6 +264,29 @@ nav select {
     color: #9f1f27;
 }
 
+.clear-part-btn {
+    padding: 6px 12px;
+    height: 40px;
+    border: 1px solid #dda15e;
+    border-radius: 6px;
+    background: #fef3c7;
+    color: #92400e;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.clear-part-btn:hover {
+    background: #fcd34d;
+    border-color: #ca8a04;
+}
+
+.clear-part-btn:active {
+    transform: scale(0.98);
+}
+
 /* inline seek next to audio button */
 .inline-audio-seek {
     width: 140px;

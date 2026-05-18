@@ -43,7 +43,7 @@ export default {
     "listening": {
       "part1": { "1": "C", "2": "C", "3": "A", "4": "B", "5": "B", "6": "C", "7": "A" },
       "part2": { "8": "B", "9": "A", "10": "A", "11": "C", "12": "C", "13": "B" },
-      "part3": { "14": "different building", "15": "13 September", "16": "exercises", "17": "training manager", "18": "(company) restaurant", "19": "134" },
+      "part3": { "14": "different building", "15": "13 September", "16": "exercises", "17": "training manager", "18": "(company) restaurant/restaurant", "19": "134" },
       "part4": { "20": "A", "21": "B", "22": "B", "23": "C", "24": "A", "25": "B" }
     }
   },
@@ -59,7 +59,7 @@ export default {
     "listening": {
       "part1": { "1": "B", "2": "C", "3": "C", "4": "B", "5": "C", "6": "A", "7": "A" },
       "part2": { "8": "A", "9": "B", "10": "A", "11": "B", "12": "B", "13": "C" },
-      "part3": { "14": "interview", "15": "entertainment", "16": "7.00/7 pm/7 o'clock", "17": "speech competitions", "18": "free", "19": "£170" },
+      "part3": { "14": "interview", "15": "entertainment", "16": "7.00/7 pm/7 o'clock", "17": "speech competitions", "18": "free", "19": "£170/170" },
       "part4": { "20": "B", "21": "C", "22": "A", "23": "A", "24": "C", "25": "B" }
     }
   },

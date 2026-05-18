@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cậu sẽ làm Valentine của tớ chứ? ❤️</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Playfair Display & Quicksand -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #ffeef2;
+            overflow-x: hidden;
+        }
+        .fancy-title {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Hiệu ứng nhịp tim đập */
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.12); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.12); }
+            70% { transform: scale(1); }
+        }
+        .heart-beat {
+            animation: heartbeat 1.4s infinite ease-in-out;
+        }
+        /* Pháo tim rơi */
+        .falling-heart {
+            position: absolute;
+            pointer-events: none;
+            animation: fall linear forwards;
+        }
+        @keyframes fall {
+            0% {
+                transform: translateY(-20px) rotate(0deg) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden selection:bg-pink-200">
+
+    <!-- Container hiệu ứng tim rơi khi đồng ý -->
+    <div id="heart-rain-container" class="absolute inset-0 pointer-events-none z-50"></div>
+
+    <!-- Hộp nội dung chính -->
+    <main class="bg-white/80 backdrop-blur-md rounded-3xl p-6 md:p-10 shadow-xl border border-pink-100 max-w-md w-full text-center relative z-10 transition-all duration-500 transform scale-100" id="main-card">
+        
+        <!-- Nhãn tiêu đề nhỏ -->
+        <span class="bg-red-500 text-white font-bold px-4 py-1.5 rounded-full text-sm tracking-wider uppercase shadow-md inline-block mb-4 animate-bounce">
+            Part 1
+        </span>
+        
+        <h1 class="fancy-title text-3xl md:text-4xl font-semibold text-rose-600 mb-6" id="title-text">
+            Will you be My Valentine?
+        </h1>
+
+        <!-- Khu vực ảnh minh họa động (SVG) -->
+        <div class="h-44 flex items-center justify-center mb-8 relative" id="image-container">
+            <!-- Giao diện gấu Chibi dễ thương vẽ bằng SVG -->
+            <svg class="w-40 h-40 heart-beat" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" id="cute-illustration">
+                <!-- Gấu trắng (Milk) -->
+                <circle cx="70" cy="110" r="35" fill="#FFFFFF" stroke="#4A3728" stroke-width="4"/>
+                <circle cx="50" cy="75" r="14" fill="#FFFFFF" stroke="#4A3728" stroke-width="4"/>
+                <circle cx="50" cy="75" r="7" fill="#FFC0CB"/>
+                <!-- Gấu nâu (Mocha) -->
+                <circle cx="130" cy="110" r="35" fill="#D2B48C" stroke="#4A3728" stroke-width="4"/>
+                <circle cx="150" cy="75" r="14" fill="#D2B48C" stroke="#4A3728" stroke-width="4"/>
+                <circle cx="150" cy="75" r="7" fill="#CD853F"/>
+                
+                <!-- Mặt gấu trắng -->
+                <circle cx="60" cy="105" r="3" fill="#4A3728"/>
+                <circle cx="80" cy="105" r="3" fill="#4A3728"/>
+                <path d="M 67 113 Q 70 116 73 113" stroke="#4A3728" stroke-width="3" stroke-linecap="round"/>
+                <ellipse cx="55" cy="111" rx="5" ry="3" fill="#FFB6C1" opacity="0.8"/>
+                <ellipse cx="85" cy="111" rx="5" ry="3" fill="#FFB6C1" opacity="0.8"/>
+
+                <!-- Mặt gấu nâu -->
+                <circle cx="120" cy="105" r="3" fill="#4A3728"/>
+                <circle cx="140" cy="105" r="3" fill="#4A3728"/>
+                <path d="M 127 113 Q 130 110 133 113" stroke="#4A3728" stroke-width="3" stroke-linecap="round"/>
+                <ellipse cx="115" cy="111" rx="5" ry="3" fill="#FA8072" opacity="0.8"/>
+                <ellipse cx="145" cy="111" rx="5" ry="3" fill="#FA8072" opacity="0.8"/>
+
+                <!-- Trái tim đỏ ở giữa -->
+                <path d="M 100 120 C 95 105, 80 110, 100 135 C 120 110, 105 105, 100 120 Z" fill="#FF3E6C" stroke="#FFFFFF" stroke-width="2">
+                    <animate attributeName="transform" type="scale" values="1; 1.2; 1" keyTimes="0; 0.5; 1" dur="1s" repeatCount="indefinite" transform-origin="100 120" />
+                </path>
+            </svg>
+        </div>
+
+        <p class="text-gray-600 font-medium mb-8 text-lg" id="sub-text">
+            Cậu sẽ làm người yêu tớ nhé? ( °□° ) !!
+        </p>
+
+        <!-- Container nút bấm (Tương tác động cực mạnh) -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-6 min-h-[160px] relative" id="buttons-area">
+            
+            <!-- Nút YES siêu to khổng lồ và ngày càng to -->
+            <button id="yesBtn" class="bg-green-500 hover:bg-green-600 text-white font-extrabold rounded-2xl shadow-lg shadow-green-200 transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center z-10" style="width: 150px; height: 70px; font-size: 24px;">
+                ĐỒNG Ý ❤️
+            </button>
+
+            <!-- Nút NO tinh nghịch, né tránh khi click/hover -->
+            <button id="noBtn" class="bg-red-500 hover:bg-red-600 text-white font-bold px-4 py-2 rounded-xl shadow-md transition-all duration-200 absolute sm:static z-40 whitespace-nowrap text-sm" style="transition: left 0.2s ease, top 0.2s ease, font-size 0.2s ease;">
+                Tớ sẽ héo mòn mất.. 😢
+            </button>
+
+        </div>
+    </main>
+
+    <!-- Footer bản quyền siêu dễ thương -->
+    <footer class="mt-8 text-rose-400 text-xs font-semibold z-10 text-center">
+        Made with ❤️ for you
+    </footer>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const titleText = document.getElementById('title-text');
+        const subText = document.getElementById('sub-text');
+        const imgContainer = document.getElementById('image-container');
+        const heartRainContainer = document.getElementById('heart-rain-container');
+        const buttonsArea = document.getElementById('buttons-area');
+
+        let yesSize = 24; // Kích thước chữ ban đầu của nút Yes (px)
+        let yesWidth = 150; // Chiều rộng ban đầu (px)
+        let yesHeight = 70; // Chiều cao ban đầu (px)
+        let escapeCount = 0; // Đếm số lần né tránh
+        let lastTriggerTime = 0; // Tránh bấm/chạm quá nhanh gây lỗi vị trí
+
+        // Danh sách các câu thoại tinh nghịch đổi dần khi người dùng bấm/di chuột vào nút NO
+        const noPhrases = [
+            "Tớ sẽ héo mòn mất.. 😢",
+            "Cậu chắc chưa thế? 🤔",
+            "Đi mà, đồng ý đi mờ! 🥺",
+            "Tớ khóc thật đấy nha! 😭",
+            "Ơ kìa, đừng nhấn đây nữa!",
+            "Nút Có bên kia cơ mà! 👉",
+            "Tớ sẽ tan chảy ra mất... 🫠",
+            "Không cho bấm nút này đâu nha!",
+            "Không lối thoát rồi, nhấn CÓ đi!"
+        ];
+
+        // Hàm xử lý việc di chuyển ngẫu nhiên của nút NO và làm phình to nút YES
+        function handleNoAction(e) {
+            const now = Date.now();
+            // Ngăn chặn sự kiện lặp lại quá nhanh trong vòng 100ms (ví dụ vừa touch vừa click)
+            if (now - lastTriggerTime < 100) return;
+            lastTriggerTime = now;
+
+            escapeCount++;
+
+            // 1. Phình to nút YES
+            yesSize += 6;
+            yesWidth += 22;
+            yesHeight += 12;
+
+            yesBtn.style.fontSize = `${yesSize}px`;
+            yesBtn.style.width = `${yesWidth}px`;
+            yesBtn.style.height = `${yesHeight}px`;
+
+            // Thay đổi nội dung nút No tinh nghịch hơn
+            const phraseIndex = Math.min(escapeCount, noPhrases.length - 1);
+            noBtn.innerText = noPhrases[phraseIndex];
+
+            // 2. Tính toán vị trí ngẫu nhiên theo % màn hình (Đảm bảo luôn luôn nằm trong khung hình)
+            // Giới hạn trong khoảng từ 15% đến 80% để nút không bị dính sát mép viền điện thoại
+            const randomX = Math.floor(Math.random() * 65) + 15; 
+            const randomY = Math.floor(Math.random() * 65) + 15;
+
+            // Đặt vị trí bằng thuộc tính fixed kết hợp translate để căn giữa nút hoàn hảo
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = `${randomX}%`;
+            noBtn.style.top = `${randomY}%`;
+            noBtn.style.transform = 'translate(-50%, -50%)';
+        }
+
+        // Đăng ký cả sự kiện Hover (chuột) và Touch (chạm điện thoại) để nút nhảy nhanh nhất có thể
+        noBtn.addEventListener('mouseenter', handleNoAction);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Ngăn hành vi click giả lập mặc định của mobile
+            handleNoAction();
+        });
+        noBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleNoAction();
+        });
+
+        // Tạo hiệu ứng mưa tim lãng mạn khi nhấn YES
+        function createHeartRain() {
+            const colors = ['#FF2E93', '#FF8E53', '#FF0000', '#FF6090', '#FFB6C1'];
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'falling-heart';
+                    heart.innerHTML = `<svg class="w-6 h-6" fill="${colors[Math.floor(Math.random() * colors.length)]}" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+                    heart.style.left = `${Math.random() * 100}vw`;
+                    heart.style.animationDuration = `${Math.random() * 2 + 1.5}s`;
+                    heartRainContainer.appendChild(heart);
+                    
+                    // Xóa tim sau khi rơi xong
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 3500);
+                }, i * 60);
+            }
+        }
+
+        // Khi người dùng bấm đồng ý (YES)
+        yesBtn.addEventListener('click', () => {
+            // Thay đổi tiêu đề và nội dung ngọt ngào
+            titleText.innerHTML = "Yeessss! 🎉";
+            titleText.classList.remove('text-rose-600');
+            titleText.classList.add('text-green-600', 'text-4xl');
+            
+            subText.innerHTML = "Tớ biết ngay mà! Yêu cậu nhiềuuuuu lắm! ❤️😘";
+            subText.classList.add('text-rose-500', 'font-bold', 'text-xl');
+
+            // Cập nhật ảnh minh họa ngọt ngào hơn
+            imgContainer.innerHTML = `
+                <svg class="w-44 h-44 heart-beat" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Hai chú gấu ôm nhau hạnh phúc -->
+                    <circle cx="85" cy="110" r="35" fill="#FFFFFF" stroke="#4A3728" stroke-width="4"/>
+                    <circle cx="115" cy="110" r="35" fill="#D2B48C" stroke="#4A3728" stroke-width="4"/>
+                    
+                    <!-- Tai -->
+                    <circle cx="65" cy="75" r="14" fill="#FFFFFF" stroke="#4A3728" stroke-width="4"/>
+                    <circle cx="135" cy="75" r="14" fill="#D2B48C" stroke="#4A3728" stroke-width="4"/>
+                    
+                    <!-- Chi tiết mắt dễ thương nhắm mắt hạnh phúc -->
+                    <path d="M 75 105 Q 80 101 85 105" stroke="#4A3728" stroke-width="3" stroke-linecap="round" fill="none"/>
+                    <path d="M 115 105 Q 120 101 125 105" stroke="#4A3728" stroke-width="3" stroke-linecap="round" fill="none"/>
+                    
+                    <!-- Má hồng đỏ rực -->
+                    <ellipse cx="73" cy="113" rx="6" ry="4" fill="#FF3E6C" opacity="0.9"/>
+                    <ellipse cx="127" cy="113" rx="6" ry="4" fill="#FF3E6C" opacity="0.9"/>
+
+                    <!-- Cả đống tim bay lên -->
+                    <path d="M 100 70 C 97 60, 88 63, 100 78 C 112 63, 103 60, 100 70 Z" fill="#FF2E93"/>
+                    <path d="M 75 50 C 73 43, 66 45, 75 56 C 84 45, 77 43, 75 50 Z" fill="#FF6090"/>
+                    <path d="M 125 50 C 123 43, 116 45, 125 56 C 134 45, 127 43, 125 50 Z" fill="#FF6090"/>
+                </svg>
+            `;
+
+            // Ẩn toàn bộ nút bấm ban đầu và hiển thị thông điệp cuối cùng rực rỡ
+            buttonsArea.innerHTML = `
+                <div class="text-center w-full animate-bounce mt-4">
+                    <span class="bg-gradient-to-r from-pink-500 to-rose-500 text-white font-extrabold px-8 py-4 rounded-2xl shadow-xl text-lg inline-block">
+                        Hẹn hò thôi nào! 🌸💍
+                    </span>
+                </div>
+            `;
+
+            // Kích hoạt pháo tim rơi rực rỡ
+            createHeartRain();
+        });
+    </script>
+</body>
+</html>

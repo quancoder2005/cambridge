@@ -5,41 +5,49 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1" />
 	<title>Speaking QUESTION</title>
 	<link rel="stylesheet" href="css/style.css">
-	<script src="data/Speech.js"></script>
+	<script src="../data/Speech.js"></script>
 	<style>
-		.container { max-width: 800px; margin: 32px auto; padding: 16px; }
-		.controls { display:flex; gap:12px; align-items:center; }
-		select { padding:8px 10px; font-size:16px; }
+		:root{ --accent:#1f6feb; --muted:#6b7280; --bg:#f7fafc }
+		body{background:var(--bg);font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color:#111}
+		.container { max-width: 980px; margin: 28px auto; padding: 18px; }
+		h1{font-size:28px;margin:6px 0 18px;color:var(--accent)}
+		.controls { display:flex; gap:16px; align-items:center; flex-wrap:wrap; margin-bottom:12px }
+		.control-item{display:flex;align-items:center;gap:8px;margin-right:8px}
+		label{font-size:15px;color:var(--muted)}
+		select { padding:8px 10px; font-size:15px; border:1px solid #d1d5db; border-radius:6px; background:#fff }
 		.speed-control { display:flex; align-items:center; gap:8px; }
 		button { padding:8px 12px; font-size:16px; }
 		.assignment-list { padding-left: 18px; }
-		.assignment-item { margin: 18px 0; padding: 14px 14px 10px; border: 1px solid #ddd; border-radius: 10px; background: #fff; }
+		.assignment-item { margin: 18px 0; padding: 14px 14px 10px; border: 1px solid #e6e9ef; border-radius: 10px; background: #fff; }
 		.assignment-head { display:flex; align-items:flex-start; justify-content:space-between; gap: 12px; }
 		.question-title { margin: 0 0 10px; font-size: 18px; line-height: 1.4; }
 		.assignment-actions { display:flex; align-items:center; gap: 8px; flex: 0 0 auto; }
-		.speak-btn, .toggle-btn { border: 0; color: #fff; border-radius: 999px; width: 40px; height: 40px; padding: 0; font-size: 18px; cursor: pointer; box-shadow: 0 4px 12px rgba(31,111,235,0.22); }
-		.speak-btn { background: #1f6feb; }
+		.speak-btn, .toggle-btn { border: 0; color: #fff; border-radius: 999px; width: 40px; height: 40px; padding: 0; font-size: 18px; cursor: pointer; box-shadow: 0 6px 18px rgba(31,111,235,0.12); }
+		.speak-btn { background: var(--accent); }
 		.toggle-btn { background: #0f9d58; }
-		.speak-btn:hover { background: #1557b0; }
-		.toggle-btn:hover { background: #0b7f45; }
+		.speak-btn:hover { filter:brightness(.95) }
+		.toggle-btn:hover { filter:brightness(.95) }
 		.answer-list { display: none; margin: 0; padding-left: 20px; }
 		.assignment-item.open .answer-list { display: block; }
 		.assignment-item.open .toggle-btn { background: #0b7f45; }
 		.answer-list li { margin: 6px 0; line-height: 1.45; }
+		.question-title b{color:#111}
 	</style>
 </head>
 <body>
 	<div class="container">
 		<h1>Speaking QUESTION</h1>
 		<div class="controls">
-			<label for="assignment-selector">Chọn Assignment:</label>
-			<select id="assignment-selector" aria-label="Chọn Assignment">
-				<option value="1">Assignment 1</option>
-				<option value="2">Assignment 2</option>
-				<option value="3">Assignment 3</option>
-				<option value="4">Assignment 4</option>
-				<option value="5">Assignment 5</option>
-				<option value="6">Assignment 6</option>
+			<label for="assignment-selector">Chọn Part:</label>
+			<select id="assignment-selector" aria-label="Chọn Part">
+				<option value="1">Part 1</option>
+				<option value="2">Part 2</option>
+				<option value="3">Part 3</option>
+				<option value="4">Part 4</option>
+			</select>
+			<label for="voice-selector">Giọng đọc:</label>
+			<select id="voice-selector" aria-label="Chọn giọng đọc">
+				<option value="default">(Default)</option>
 			</select>
 			<div class="speed-control">
 				<label for="speech-speed">Tốc độ:</label>
@@ -65,6 +73,7 @@
 		function refreshVoices() {
 			if (!('speechSynthesis' in window)) return;
 			availableVoices = window.speechSynthesis.getVoices() || [];
+			populateVoiceList();
 		}
 
 		function pickFemaleEnglishVoice() {
@@ -80,9 +89,34 @@
 			);
 		}
 
+		function populateVoiceList(){
+			try{
+				const vs = document.getElementById('voice-selector');
+				if(!vs) return;
+				// clear but keep default option
+				vs.innerHTML = '<option value="default">(Default)</option>';
+				availableVoices.forEach((v)=>{
+					const opt = document.createElement('option');
+					opt.value = v.name;
+					opt.textContent = `${v.name} (${v.lang})`;
+					vs.appendChild(opt);
+				});
+				// prefer Google US English if available, otherwise auto-select a sensible default
+				const googleUS = availableVoices.find(v => /google us english/i.test(v.name) || (v.lang && /en-US/i.test(v.lang) && /google/i.test(v.name)) );
+				if(googleUS){
+					vs.value = googleUS.name;
+				}else{
+					const preferred = pickFemaleEnglishVoice();
+					if(preferred) vs.value = preferred.name;
+				}
+			}catch(e){console.warn('populateVoiceList error',e)}
+		}
+
 		const assignment1Questions = window.SPEECH_ASSIGNMENTS?.assignment1Questions || [];
 		const assignment2Questions = window.SPEECH_ASSIGNMENTS?.assignment2Questions || [];
 		const assignment3Content = window.SPEECH_ASSIGNMENTS?.assignment3Content || { part1: [], part2: [], part3: [] };
+
+
 
 		function speakText(text) {
 			if (!('speechSynthesis' in window)) {
@@ -93,10 +127,21 @@
 			const message = new SpeechSynthesisUtterance(text);
 			message.lang = 'en-US';
 			message.rate = Number(speedSelector?.value || 0.9);
-			const selectedVoice = pickFemaleEnglishVoice();
-			if (selectedVoice) {
-				message.voice = selectedVoice;
-				message.lang = selectedVoice.lang || message.lang;
+			// check user-selected voice
+			const vs = document.getElementById('voice-selector');
+			let chosenVoice = null;
+			if(vs && vs.value && vs.value !== 'default'){
+				chosenVoice = availableVoices.find(v => v.name === vs.value) || null;
+			}
+			if(chosenVoice){
+				message.voice = chosenVoice;
+				message.lang = chosenVoice.lang || message.lang;
+			}else{
+				const selectedVoice = pickFemaleEnglishVoice();
+				if (selectedVoice) {
+					message.voice = selectedVoice;
+					message.lang = selectedVoice.lang || message.lang;
+				}
 			}
 			window.speechSynthesis.speak(message);
 		}
@@ -224,7 +269,12 @@
 				renderAssignment3();
 				return;
 			}
-			content.innerHTML = `<h2>Assignment ${n}</h2><p>Không có nội dung cho Assignment ${n}.</p>`;
+			if (String(n) === '4') {
+				// Part 4: render assignment2Questions (empty by default)
+				renderQuestionSet('Part 4', assignment2Questions);
+				return;
+			}
+			content.innerHTML = `<h2>Part ${n}</h2><p>Không có nội dung cho Part ${n}.</p>`;
 		}
 
 		selector.addEventListener('change', () => renderAssignment(selector.value));

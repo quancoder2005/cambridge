@@ -758,13 +758,24 @@ function bindListeningAudioButtons() {
     });
 }
 
+window.clearPartAnswers = function(skillKey, partKey) {
+    // Clear all radio buttons for multiple choice questions
+    const radioButtons = document.querySelectorAll(`input[name^="${skillKey}-${partKey}-"]:checked`);
+    radioButtons.forEach(radio => radio.checked = false);
+    
+    // Clear all text inputs for text answer questions
+    const textInputs = document.querySelectorAll(`input[id^="${skillKey}-${partKey}-"].text-answer`);
+    textInputs.forEach(input => input.value = '');
+}
+
 
 
 function renderSkillSection(title, skillKey, schema, testKey = "") {
     let html = `<h3 class="sheet-section-title">${title}</h3>`;
     schema.forEach(item => {
         const listeningAudioButton = skillKey === "listening" ? renderListeningAudioButton(item.key, testKey) : "";
-        html += `<div class="part-block"><div class="part-header"><h4>${item.part}</h4>${listeningAudioButton}</div>`;
+        const clearButton = `<button type="button" class="clear-part-btn" onclick="clearPartAnswers('${skillKey}', '${item.key}')">Bỏ chọn</button>`;
+        html += `<div class="part-block"><div class="part-header"><h4>${item.part}</h4>${listeningAudioButton}${clearButton}</div>`;
         for (let i = item.from; i <= item.to; i++) {
             if (item.inputType === "text") {
                 html += renderTextRow(`${skillKey}-${item.key}`, i, "Nhập đáp án...");

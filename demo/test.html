@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Short B1/B2 Writing - Real Exam Template</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e74c3c;
+            --bg: #f4f6f9;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background: white;
+            border: 1px solid #cbd5e0;
+            padding: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            color: #4a5568;
+            transition: all 0.2s;
+        }
+        .btn:hover { background: #e2e8f0; }
+        .btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: none;
+        }
+        .card.active { display: block; }
+        .info {
+            background: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 10px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .template-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            white-space: pre-line;
+        }
+        .fixed-text {
+            font-weight: bold;
+            color: #2b6cb0;
+        }
+        .fill-text {
+            color: var(--secondary);
+            font-weight: 500;
+        }
+        .copy-btn {
+            margin-top: 15px;
+            background: #1abc9c;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .copy-btn:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>B1/B2 Writing - Super Short Template (8 Real Exams)</h1>
+
+    <div class="menu-grid">
+        <button class="btn active" onclick="changeTab(1)">1. Email to Tania</button>
+        <button class="btn" onclick="changeTab(2)">2. Article: Holiday</button>
+        <button class="btn" onclick="changeTab(3)">3. Story: Opened door</button>
+        <button class="btn" onclick="changeTab(4)">4. Email to Mark</button>
+        <button class="btn" onclick="changeTab(5)">5. Email to Martin</button>
+        <button class="btn" onclick="changeTab(6)">6. Email to Kelly</button>
+        <button class="btn" onclick="changeTab(7)">7. Email to Karen</button>
+        <button class="btn" onclick="changeTab(8)">8. Email to Marcela</button>
+    </div>
+
+    <div id="p1" class="card active">
+        <div class="info"><strong>Format: Email (Tania)</strong> | Notes: Me too!, Say which I prefer, Tell Tania, No, because...</div>
+        <div class="template-box" id="t1"><span class="fill-text">Hi Tania, It’s great to hear from you! Me too, I am looking forward to seeing you.</span>
+
+<span class="fixed-text">First of all,</span> <span class="fill-text">I prefer the money to buy something myself.</span>
+<span class="fixed-text">Moreover,</span> <span class="fill-text">you should arrive at my house at 7:00 PM.</span>
+
+<span class="fixed-text">In addition,</span> <span class="fill-text">no, you don't need to bring food because we already have dinner.</span>
+
+<span class="fixed-text">In conclusion, it will be a fantastic experience!</span>
+<span class="fill-text">Best, Quan</span></div>
+        <button class="copy-btn" onclick="copy('t1')">Copy Text</button>
+    </div>
+
+    <div id="p2" class="card">
+        <div class="info"><strong>Format: Article (Holiday)</strong> | Questions: Kind of holiday? Favourite place? Things to do?</div>
+        <div class="template-box" id="t2"><span class="fill-text">A Great Holiday Destination
+Have you ever thought about your dream holiday?</span>
+
+<span class="fixed-text">First of all,</span> <span class="fill-text">I really enjoy a beautiful beach holiday.</span>
+<span class="fixed-text">Moreover,</span> <span class="fill-text">Da Nang city is my absolute favourite place to visit.</span>
+
+<span class="fixed-text">In addition,</span> <span class="fill-text">I love swimming in the blue sea and eating fresh seafood.</span>
+
+<span class="fixed-text">In conclusion, it will be a fantastic experience!</span></div>
+        <button class="copy-btn" onclick="copy('t2')">Copy Text</button>
+    </div>
+
+    <div id="p3" class="card">
+        <div class="info"><strong>Format: Story</strong> | Must begin with: "When I opened the door, I couldn't believe my eyes."</div>
+        <div class="template-box" id="t3"><span class="fill-text">When I opened the door, I couldn't believe my eyes. At first, I felt a bit surprised.</span>
+
+<span class="fixed-text">First of all,</span> <span class="fill-text">the entire living room was beautifully decorated with balloons.</span>
+<span class="fixed-text">Moreover,</span> <span class="fill-text">all of my close friends suddenly jumped out from the corner.</span>
+
+<span class="fixed-text">In addition,</span> <span class="fill-text">they started singing a happy birthday song to me.</span>
+
+<span class="fixed-text">In conclusion, it will be a fantastic experience!</span></div>
+        <button class="copy-btn" onclick="copy('t3')">Copy Text</button>
+    </div>
+
+    <div id="p4" class="card">
+        <div class="info"><strong>Format: Email (Mark)</strong> | Notes: Yes!, Tell Mark, Explain, Give details</div>
+        <div class="template-box" id="t4"><span class="fill-text">Hi Mark, Yes! My family and I are doing very well. Thanks.</span>
+
+<span class="fixed-text">First of all,</span> <span class="fill-text">we usually have breakfast at 7 AM and dinner at 7:30 PM.</span>
+<span class="fixed-text">Moreover,</span> <span class="fill-text">local street food stalls are more popular than Indian restaurants here.</span>
+
+<span class="fixed-text">In addition,</span> <span class="fill-text">I love cooking traditional beef Pho the most at weekends.</span>
+
+<span class="fixed-text">In conclusion, it will be a fantastic experience!</span>
+<span class="fill-text">Best, Quan</span></div>
+        <button class="copy-btn" onclick="copy('t4')">Copy Text</button>
+    </div>
+
+    <div id="p5" class="card">
+        <div class="info"><strong>Format: Email (Martin)</strong> | Notes: Yes!, Tell Martin, Suggest..., Yes, some chocolate</div>
+        <div class="template-box" id="t5"><span class="fill-text">Hi Martin, Yes, it was great talking to you on the phone too!</span>
+
+<span class="fixed-text">First of all,</span> <span class="fill-text">the weather in November is cold, so bring warm clothes.</span>
+<span class="fixed-text">Moreover,</span> <span class="fill-text">I suggest meeting on Saturday because I am free all day.</span>
+
+<span class="fixed-text">In addition,</span> <span class="fill-text">yes, please bring me some sweet English chocolate from your country.</span>
+
+<span class="fixed-text">In conclusion, it will be a fantastic experience!</span>
+<span class="fill-text">Best, Quan</span></div>
+        <button class="copy-btn" onclick="copy('t5')">Copy Text</button>
+    </div>
+
+    <div id="p6" class="card">
+        <div class="info"><strong>Format: Email (Kelly)</strong> | Notes: Yes!, Suggest..., Say which I prefer, Tell Kelly</div>
+        <div class="template-box" id="t6"><span class="fill-text">Hi Kelly, Yes! I am so pleased to study together next week.</span>
+
+<span class="fixed-text">First of all,</span> <span class="fill-text">I suggest getting a takeaway because it is very fast.</span>
+<span class="fixed-text">Moreover,</span> <span class="fill-text">I prefer to bring my own laptop to work easily.</span>
+
+<span class="fixed-text">In addition,</span> <span class="fill-text">I will come to your house this Tuesday morning at 9:00 AM.</span>
+
+<span class="fixed-text">In conclusion, it will be a fantastic experience!</span>
+<span class="fill-text">Best, Quan</span></div>
+        <button class="copy-btn" onclick="copy('t6')">Copy Text</button>
+    </div>
+
+    <div id="p7" class="card">
+        <div class="info"><strong>Format: Email (Karen)</strong> | Notes: No problem, Suggest..., Say what I like doing, Thank her</div>
+        <div class="template-box" id="t7"><span class="fill-text">Hi Karen, No problem! You can stay in my apartment this weekend.</span>
+
+<span class="fixed-text">First of all,</span> <span class="fill-text">I suggest visiting the local museum on Saturday afternoon.</span>
+<span class="fixed-text">Moreover,</span> <span class="fill-text">on Sunday, I like going to the quiet park nearby to relax.</span>
+
+<span class="fixed-text">In addition,</span> <span class="fill-text">thank you so much for taking great care of my place.</span>
+
+<span class="fixed-text">In conclusion, it will be a fantastic experience!</span>
+<span class="fill-text">Best, Quan</span></div>
+        <button class="copy-btn" onclick="copy('t7')">Copy Text</button>
+    </div>
+
+    <div id="p8" class="card">
+        <div class="info"><strong>Format: Email (Marcela)</strong> | Notes: Me too!, Tell Marcela, Suggest..., Yes, because...</div>
+        <div class="template-box" id="t8"><span class="fill-text">Hi Marcela, Me too! I am looking forward to seeing you next week.</span>
+
+<span class="fixed-text">First of all,</span> <span class="fill-text">we should meet at the big coffee shop near the center.</span>
+<span class="fixed-text">Moreover,</span> <span class="fill-text">your dad can visit the local night market during the evening.</span>
+
+<span class="fixed-text">In addition,</span> <span class="fill-text">yes, please bring photos because I really want to see them.</span>
+
+<span class="fixed-text">In conclusion, it will be a fantastic experience!</span>
+<span class="fill-text">Best, Quan</span></div>
+        <button class="copy-btn" onclick="copy('t8')">Copy Text</button>
+    </div>
+
+</div>
+
+<script>
+    function changeTab(num) {
+        document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('p' + num).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+    function copy(id) {
+        const txt = document.getElementById(id).innerText;
+        navigator.clipboard.writeText(txt).then(() => {
+            alert("Text copied completely!");
+        });
+    }
+</script>
+
+</body>
+</html>
