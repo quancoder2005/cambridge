@@ -17,6 +17,8 @@
 		select { padding:8px 10px; font-size:15px; border:1px solid #d1d5db; border-radius:6px; background:#fff }
 		.speed-control { display:flex; align-items:center; gap:8px; }
 		button { padding:8px 12px; font-size:16px; }
+		.control-btn { background:#374151; color:#fff; border:0; border-radius:6px; padding:8px 10px; cursor:pointer; }
+		.control-btn:hover { filter:brightness(.95); }
 		.assignment-list { padding-left: 18px; }
 		.assignment-item { margin: 18px 0; padding: 14px 14px 10px; border: 1px solid #e6e9ef; border-radius: 10px; background: #fff; }
 		.assignment-head { display:flex; align-items:flex-start; justify-content:space-between; gap: 12px; }
@@ -59,6 +61,11 @@
 					<option value="1.25">1.25x</option>
 				</select>
 			</div>
+			<div class="control-item" style="margin-left:6px;">
+				<button id="pause-btn" class="control-btn" type="button" aria-label="Pause">Pause</button>
+				<button id="resume-btn" class="control-btn" type="button" aria-label="Resume">Resume</button>
+				<button id="stop-btn" class="control-btn" type="button" aria-label="Stop">Stop</button>
+			</div>
 		</div>
 
 		<div id="assignment-content" style="margin-top:20px"></div>
@@ -69,6 +76,38 @@
 		const speedSelector = document.getElementById('speech-speed');
 		const content = document.getElementById('assignment-content');
 		let availableVoices = [];
+
+		// playback control elements
+		const pauseBtn = document.getElementById('pause-btn');
+		const resumeBtn = document.getElementById('resume-btn');
+		const stopBtn = document.getElementById('stop-btn');
+
+		function updatePlaybackButtons(){
+			if (!('speechSynthesis' in window)) return;
+			const syn = window.speechSynthesis;
+			if (pauseBtn) pauseBtn.disabled = !syn.speaking || syn.paused;
+			if (resumeBtn) resumeBtn.disabled = !syn.paused;
+			if (stopBtn) stopBtn.disabled = !syn.speaking && !syn.pending;
+		}
+
+		if(pauseBtn){
+			pauseBtn.addEventListener('click', ()=>{
+				if(window.speechSynthesis.speaking && !window.speechSynthesis.paused) window.speechSynthesis.pause();
+				updatePlaybackButtons();
+			});
+		}
+		if(resumeBtn){
+			resumeBtn.addEventListener('click', ()=>{
+				if(window.speechSynthesis.paused) window.speechSynthesis.resume();
+				updatePlaybackButtons();
+			});
+		}
+		if(stopBtn){
+			stopBtn.addEventListener('click', ()=>{
+				window.speechSynthesis.cancel();
+				updatePlaybackButtons();
+			});
+		}
 
 		function refreshVoices() {
 			if (!('speechSynthesis' in window)) return;
@@ -144,32 +183,66 @@
 				}
 			}
 			window.speechSynthesis.speak(message);
+			message.onend = () => { updatePlaybackButtons(); };
+			message.onpause = () => { updatePlaybackButtons(); };
+			message.onresume = () => { updatePlaybackButtons(); };
+			updatePlaybackButtons();
 		}
 
 		function getEnglishQuestion(prompt) {
-			return String(prompt || '').split('(')[0].trim();
+			// remove leading speaker labels like "A:", "B:", "A)" or "B)" then strip translations in parentheses
+			return String(prompt || '')
+				.replace(/^\s*[ABab]\s*(?:[:\)\.]?)\s*/, '')
+				.split('(')[0].trim();
 		}
 
 		function renderQuestionSet(title, questions) {
 			const html = [`<h2>${title}</h2><ol class="assignment-list">`];
 			questions.forEach((item, index) => {
-				const englishQuestion = getEnglishQuestion(item.prompt);
-				html.push(`
-					<li class="assignment-item">
-						<div class="assignment-head">
-							<div>
-								<p class="question-title"><b>${index + 1}. ${item.prompt}</b></p>
+				// If prompt looks like a multi-line A/B dialogue, split into separate lines with individual speak buttons
+				if (/\n/.test(item.prompt) && /(A:|B:)/.test(item.prompt)) {
+					const lines = String(item.prompt).split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+					html.push(`
+						<li class="assignment-item open">
+							<div class="assignment-head">
+								<div>
+									<p class="question-title"><b>${index + 1}. Dialogue</b></p>
+								</div>
+								<div class="assignment-actions"></div>
 							</div>
-							<div class="assignment-actions">
-								<button type="button" class="toggle-btn" title="Hiện / Ẩn câu trả lời" aria-label="Hiện / Ẩn câu trả lời" aria-expanded="false">▼</button>
-								<button type="button" class="speak-btn" title="Đọc câu hỏi" aria-label="Đọc câu hỏi" data-speak="${englishQuestion.replace(/"/g, '&quot;')}">🔊</button>
-							</div>
-						</div>
-						<ul class="answer-list">
-							${item.answers.join('')}
-						</ul>
-					</li>
-				`);
+							<ul class="answer-list">
+							`);
+					// build this item's inner list (image first if present, then lines, then answers)
+					const itemInner = [];
+					if (item.imagePath) {
+						itemInner.push(`<li style="text-align:center; list-style:none; margin-bottom:12px; width:100%;"><img src="${item.imagePath}" alt="${(item.imageAlt||'image').replace(/"/g,'&quot;')}" style="max-width:100%; max-height:280px; border-radius:8px; display:block; margin:0 auto;"></li>`);
+					}
+					lines.forEach((line) => {
+						const englishLine = getEnglishQuestion(line);
+						itemInner.push(`<li style="display:flex;justify-content:space-between;align-items:center;"> <span>${line}</span> <button type="button" class="speak-btn" title="Đọc dòng" data-speak="${englishLine.replace(/"/g, '&quot;')}">🔊</button> </li>`);
+					});
+					itemInner.push(`${item.answers.join('')}`);
+					html.push(itemInner.join(''));
+					html.push(`</ul></li>`);
+				} else {
+					const englishQuestion = getEnglishQuestion(item.prompt);
+					html.push(`
+							<li class="assignment-item">
+								<div class="assignment-head">
+									<div>
+										<p class="question-title"><b>${index + 1}. ${item.prompt}</b></p>
+									</div>
+									<div class="assignment-actions">
+										<button type="button" class="toggle-btn" title="Hiện / Ẩn câu trả lời" aria-label="Hiện / Ẩn câu trả lời" aria-expanded="false">▼</button>
+										<button type="button" class="speak-btn" title="Đọc câu hỏi" aria-label="Đọc câu hỏi" data-speak="${englishQuestion.replace(/"/g, '&quot;')}">🔊</button>
+									</div>
+								</div>
+								<ul class="answer-list">
+									${item.answers.join('')}
+								</ul>
+							</li>
+					`);
+				}
 			});
 			html.push(`</ol>`);
 			content.innerHTML = html.join('');

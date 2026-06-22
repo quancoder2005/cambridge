@@ -1,244 +1,277 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Short B1/B2 Writing - Real Exam Template</title>
+    <title>Luyện Viết Tiếng Anh Đa Chế Độ</title>
     <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #e74c3c;
-            --bg: #f4f6f9;
-        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
+            background-color: #f4f7f6;
             color: #333;
-            margin: 0;
-            padding: 20px;
             line-height: 1.6;
-        }
-        .container {
+            padding: 20px;
             max-width: 800px;
             margin: 0 auto;
         }
         h1 {
+            color: #2c3e50;
             text-align: center;
-            color: var(--primary);
-            font-size: 22px;
-            margin-bottom: 20px;
+            margin-bottom: 5px;
         }
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-        .btn {
-            background: white;
-            border: 1px solid #cbd5e0;
-            padding: 10px;
-            font-size: 13px;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            color: #4a5568;
-            transition: all 0.2s;
-        }
-        .btn:hover { background: #e2e8f0; }
-        .btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            display: none;
-        }
-        .card.active { display: block; }
-        .info {
-            background: #ebf8ff;
-            border-left: 4px solid #3182ce;
-            padding: 10px;
-            font-size: 14px;
-            margin-bottom: 15px;
-            border-radius: 4px;
-        }
-        .template-box {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            padding: 20px;
-            font-size: 16px;
+        .container {
+            background: #fff;
+            padding: 30px;
             border-radius: 8px;
-            white-space: pre-line;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        .fixed-text {
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
             font-weight: bold;
-            color: #2b6cb0;
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
         }
-        .fill-text {
-            color: var(--secondary);
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #bdc3c7;
+            border-radius: 4px;
+            background-color: #fff;
+            outline: none;
+        }
+        select:focus {
+            border-color: #3498db;
+        }
+        /* Style riêng cho cụm chọn chế độ hiển thị */
+        .mode-container {
+            display: flex;
+            gap: 20px;
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px dashed #3498db;
+        }
+        .mode-option {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
             font-weight: 500;
         }
-        .copy-btn {
-            margin-top: 15px;
-            background: #1abc9c;
-            color: white;
-            border: none;
-            padding: 12px;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 6px;
+        .mode-option input {
+            margin-right: 8px;
             cursor: pointer;
-            width: 100%;
         }
-        .copy-btn:hover { opacity: 0.9; }
+        textarea {
+            width: 100%;
+            height: 180px;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 4px;
+            resize: vertical;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        textarea:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        #resultSection {
+            margin-top: 25px;
+        }
+        .score-box {
+            font-size: 20px;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: #e2e8f0;
+            color: #4a5568;
+            transition: all 0.3s ease;
+        }
+        .review-panel {
+            background: #fdfdfd;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-size: 16px;
+            line-height: 2;
+            min-height: 50px;
+        }
+        .correct-word {
+            color: #27ae60;
+            font-weight: 500;
+        }
+        .wrong-word {
+            color: #c0392b;
+            background-color: #fce4d6;
+            text-decoration: line-through red;
+            font-weight: bold;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+        .missing-word {
+            color: #7f8c8d;
+            font-style: italic;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>B1/B2 Writing - Super Short Template (8 Real Exams)</h1>
-
-    <div class="menu-grid">
-        <button class="btn active" onclick="changeTab(1)">1. Email to Tania</button>
-        <button class="btn" onclick="changeTab(2)">2. Article: Holiday</button>
-        <button class="btn" onclick="changeTab(3)">3. Story: Opened door</button>
-        <button class="btn" onclick="changeTab(4)">4. Email to Mark</button>
-        <button class="btn" onclick="changeTab(5)">5. Email to Martin</button>
-        <button class="btn" onclick="changeTab(6)">6. Email to Kelly</button>
-        <button class="btn" onclick="changeTab(7)">7. Email to Karen</button>
-        <button class="btn" onclick="changeTab(8)">8. Email to Marcela</button>
+    <h1>Ứng Dụng Chấm Bài Thông Minh</h1>
+    <p style="text-align: center; color: #7f8c8d; margin-top: 0; margin-bottom: 25px;">Hệ thống chấm điểm tự động theo thời gian thực và hỗ trợ chuyển đổi chế độ hiển thị lỗi.</p>
+    
+    <!-- 1. Chọn bài viết -->
+    <div class="form-group">
+        <label for="topicSelect">1. Chọn bài viết muốn luyện tập:</label>
+        <select id="topicSelect" onchange="resetForm()">
+            <option value="film">Film night</option>
+            <option value="holiday">My holiday</option>
+            <option value="studying">Studying together</option>
+            <option value="restaurant">The Restaurant</option>
+        </select>
     </div>
 
-    <div id="p1" class="card active">
-        <div class="info"><strong>Format: Email (Tania)</strong> | Notes: Me too!, Say which I prefer, Tell Tania, No, because...</div>
-        <div class="template-box" id="t1"><span class="fill-text">Hi Tania, It’s great to hear from you! Me too, I am looking forward to seeing you.</span>
-
-<span class="fixed-text">First of all,</span> <span class="fill-text">I prefer the money to buy something myself.</span>
-<span class="fixed-text">Moreover,</span> <span class="fill-text">you should arrive at my house at 7:00 PM.</span>
-
-<span class="fixed-text">In addition,</span> <span class="fill-text">no, you don't need to bring food because we already have dinner.</span>
-
-<span class="fixed-text">In conclusion, it will be a fantastic experience!</span>
-<span class="fill-text">Best, Quan</span></div>
-        <button class="copy-btn" onclick="copy('t1')">Copy Text</button>
+    <!-- 2. Chọn chế độ hiển thị (Yêu cầu mới) -->
+    <div class="form-group">
+        <label>2. Chọn chế độ hiển thị lỗi sai:</label>
+        <div class="mode-container">
+            <label class="mode-option">
+                <input type="radio" name="displayMode" value="1" checked onchange="checkTextDetailed()">
+                Chế độ 1: Chỉ hiện chữ đỏ sai (Ẩn từ đúng)
+            </label>
+            <label class="mode-option">
+                <input type="radio" name="displayMode" value="2" onchange="checkTextDetailed()">
+                Chế độ 2: Vừa hiện chữ đỏ sai + Vừa hiện kết quả đúng
+            </label>
+        </div>
     </div>
 
-    <div id="p2" class="card">
-        <div class="info"><strong>Format: Article (Holiday)</strong> | Questions: Kind of holiday? Favourite place? Things to do?</div>
-        <div class="template-box" id="t2"><span class="fill-text">A Great Holiday Destination
-Have you ever thought about your dream holiday?</span>
-
-<span class="fixed-text">First of all,</span> <span class="fill-text">I really enjoy a beautiful beach holiday.</span>
-<span class="fixed-text">Moreover,</span> <span class="fill-text">Da Nang city is my absolute favourite place to visit.</span>
-
-<span class="fixed-text">In addition,</span> <span class="fill-text">I love swimming in the blue sea and eating fresh seafood.</span>
-
-<span class="fixed-text">In conclusion, it will be a fantastic experience!</span></div>
-        <button class="copy-btn" onclick="copy('t2')">Copy Text</button>
+    <!-- 3. Ô nhập liệu -->
+    <div class="form-group">
+        <label for="userInput">3. Nhập bài làm của bạn tại đây:</label>
+        <textarea id="userInput" oninput="checkTextDetailed()" placeholder="Bắt đầu gõ bài viết tiếng Anh tại đây..."></textarea>
     </div>
 
-    <div id="p3" class="card">
-        <div class="info"><strong>Format: Story</strong> | Must begin with: "When I opened the door, I couldn't believe my eyes."</div>
-        <div class="template-box" id="t3"><span class="fill-text">When I opened the door, I couldn't believe my eyes. At first, I felt a bit surprised.</span>
-
-<span class="fixed-text">First of all,</span> <span class="fill-text">the entire living room was beautifully decorated with balloons.</span>
-<span class="fixed-text">Moreover,</span> <span class="fill-text">all of my close friends suddenly jumped out from the corner.</span>
-
-<span class="fixed-text">In addition,</span> <span class="fill-text">they started singing a happy birthday song to me.</span>
-
-<span class="fixed-text">In conclusion, it will be a fantastic experience!</span></div>
-        <button class="copy-btn" onclick="copy('t3')">Copy Text</button>
+    <!-- Kết quả tự động -->
+    <div id="resultSection">
+        <div id="scoreBox" class="score-box">Độ chính xác: 0% (0/0 từ)</div>
+        <h3>Chi tiết bài làm (Cập nhật trực tiếp):</h3>
+        <div id="reviewPanel" class="review-panel">Chưa có dữ liệu. Hãy gõ gì đó vào ô nhập liệu...</div>
     </div>
-
-    <div id="p4" class="card">
-        <div class="info"><strong>Format: Email (Mark)</strong> | Notes: Yes!, Tell Mark, Explain, Give details</div>
-        <div class="template-box" id="t4"><span class="fill-text">Hi Mark, Yes! My family and I are doing very well. Thanks.</span>
-
-<span class="fixed-text">First of all,</span> <span class="fill-text">we usually have breakfast at 7 AM and dinner at 7:30 PM.</span>
-<span class="fixed-text">Moreover,</span> <span class="fill-text">local street food stalls are more popular than Indian restaurants here.</span>
-
-<span class="fixed-text">In addition,</span> <span class="fill-text">I love cooking traditional beef Pho the most at weekends.</span>
-
-<span class="fixed-text">In conclusion, it will be a fantastic experience!</span>
-<span class="fill-text">Best, Quan</span></div>
-        <button class="copy-btn" onclick="copy('t4')">Copy Text</button>
-    </div>
-
-    <div id="p5" class="card">
-        <div class="info"><strong>Format: Email (Martin)</strong> | Notes: Yes!, Tell Martin, Suggest..., Yes, some chocolate</div>
-        <div class="template-box" id="t5"><span class="fill-text">Hi Martin, Yes, it was great talking to you on the phone too!</span>
-
-<span class="fixed-text">First of all,</span> <span class="fill-text">the weather in November is cold, so bring warm clothes.</span>
-<span class="fixed-text">Moreover,</span> <span class="fill-text">I suggest meeting on Saturday because I am free all day.</span>
-
-<span class="fixed-text">In addition,</span> <span class="fill-text">yes, please bring me some sweet English chocolate from your country.</span>
-
-<span class="fixed-text">In conclusion, it will be a fantastic experience!</span>
-<span class="fill-text">Best, Quan</span></div>
-        <button class="copy-btn" onclick="copy('t5')">Copy Text</button>
-    </div>
-
-    <div id="p6" class="card">
-        <div class="info"><strong>Format: Email (Kelly)</strong> | Notes: Yes!, Suggest..., Say which I prefer, Tell Kelly</div>
-        <div class="template-box" id="t6"><span class="fill-text">Hi Kelly, Yes! I am so pleased to study together next week.</span>
-
-<span class="fixed-text">First of all,</span> <span class="fill-text">I suggest getting a takeaway because it is very fast.</span>
-<span class="fixed-text">Moreover,</span> <span class="fill-text">I prefer to bring my own laptop to work easily.</span>
-
-<span class="fixed-text">In addition,</span> <span class="fill-text">I will come to your house this Tuesday morning at 9:00 AM.</span>
-
-<span class="fixed-text">In conclusion, it will be a fantastic experience!</span>
-<span class="fill-text">Best, Quan</span></div>
-        <button class="copy-btn" onclick="copy('t6')">Copy Text</button>
-    </div>
-
-    <div id="p7" class="card">
-        <div class="info"><strong>Format: Email (Karen)</strong> | Notes: No problem, Suggest..., Say what I like doing, Thank her</div>
-        <div class="template-box" id="t7"><span class="fill-text">Hi Karen, No problem! You can stay in my apartment this weekend.</span>
-
-<span class="fixed-text">First of all,</span> <span class="fill-text">I suggest visiting the local museum on Saturday afternoon.</span>
-<span class="fixed-text">Moreover,</span> <span class="fill-text">on Sunday, I like going to the quiet park nearby to relax.</span>
-
-<span class="fixed-text">In addition,</span> <span class="fill-text">thank you so much for taking great care of my place.</span>
-
-<span class="fixed-text">In conclusion, it will be a fantastic experience!</span>
-<span class="fill-text">Best, Quan</span></div>
-        <button class="copy-btn" onclick="copy('t7')">Copy Text</button>
-    </div>
-
-    <div id="p8" class="card">
-        <div class="info"><strong>Format: Email (Marcela)</strong> | Notes: Me too!, Tell Marcela, Suggest..., Yes, because...</div>
-        <div class="template-box" id="t8"><span class="fill-text">Hi Marcela, Me too! I am looking forward to seeing you next week.</span>
-
-<span class="fixed-text">First of all,</span> <span class="fill-text">we should meet at the big coffee shop near the center.</span>
-<span class="fixed-text">Moreover,</span> <span class="fill-text">your dad can visit the local night market during the evening.</span>
-
-<span class="fixed-text">In addition,</span> <span class="fill-text">yes, please bring photos because I really want to see them.</span>
-
-<span class="fixed-text">In conclusion, it will be a fantastic experience!</span>
-<span class="fill-text">Best, Quan</span></div>
-        <button class="copy-btn" onclick="copy('t8')">Copy Text</button>
-    </div>
-
 </div>
 
 <script>
-    function changeTab(num) {
-        document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-        document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('p' + num).classList.add('active');
-        event.currentTarget.classList.add('active');
+    const essayDatabase = {
+        film: `Dear Lisa,
+Thanks for your email, it's great to hear from you!
+First, my studies are going great at the moment, thank you! Regarding your question about the movie, you can decide what we watch because you have good taste. About the snacks, I think I will bring some popcorn and fruit juice. Finally, 6.00 is a perfect time for me, so it is not too early at all.
+Write back soon! Best, Quan.`,
+
+        holiday: `Dear Martin,
+Thanks for your email, it's great to hear from you!
+First, yes, it was wonderful talking to you on the phone last week. Regarding your question about the weather, it is quite cold in November, so you should bring warm clothes. About our meeting, I think we can meet up on Saturday afternoon at a nice café. Finally, yes, please bring me some chocolate from England!
+Write back soon! Best, Quan.`,
+
+        studying: `Dear Kelly,
+Thanks for your email, it's great to hear from you!
+First, yes, I am so pleased that we are studying together next week. Regarding your question about food, I think we should get a takeaway to save time. About the computer, personally, I prefer to bring my own laptop because all my notes are in it. Finally, I can come to your house on Wednesday afternoon.
+Write back soon! Best, Quan`,
+
+        restaurant: `Dear Maura,
+Thanks for your email, it's great to hear from you!
+First, great! I am so happy that you have finally finished your exams. Regarding your question about the restaurant, it is a beautiful place with delicious food. About your young nephew and niece, I think the main meals are OK for them and they also have a special kids' menu. Finally, yes, the restaurant is very busy, so I recommend reserving a table.
+Write back soon! Best, Quan`
+    };
+
+    function splitIntoWords(text) {
+        if (!text) return [];
+        return text.trim().split(/\s+/);
     }
-    function copy(id) {
-        const txt = document.getElementById(id).innerText;
-        navigator.clipboard.writeText(txt).then(() => {
-            alert("Text copied completely!");
+
+    function cleanWordForCompare(word) {
+        if (!word) return "";
+        return word.toLowerCase().replace(/^[.,\/#!$%\^&\*;:{}=\-_`~()\[\]'"]+|[.,\/#!$%\^&\*;:{}=\-_`~()\[\]'"]+$/g, "");
+    }
+
+    function resetForm() {
+        document.getElementById('userInput').value = "";
+        const scoreBox = document.getElementById('scoreBox');
+        scoreBox.innerText = "Độ chính xác: 0% (0/0 từ)";
+        scoreBox.style.backgroundColor = "#e2e8f0";
+        scoreBox.style.color = "#4a5568";
+        document.getElementById('reviewPanel').innerHTML = "Chưa có dữ liệu. Hãy gõ gì đó vào ô nhập liệu...";
+    }
+
+    function checkTextDetailed() {
+        const selectedTopic = document.getElementById('topicSelect').value;
+        const userInput = document.getElementById('userInput').value;
+        const scoreBox = document.getElementById('scoreBox');
+        const reviewPanel = document.getElementById('reviewPanel');
+
+        // Lấy chế độ hiển thị đang được chọn (1 hoặc 2)
+        const currentMode = document.querySelector('input[name="displayMode"]:checked').value;
+
+        const originalText = essayDatabase[selectedTopic];
+        const originalWords = splitIntoWords(originalText);
+        const userWords = splitIntoWords(userInput);
+
+        if (userInput.trim() === "") {
+            scoreBox.innerText = "Độ chính xác: 0% (0/0 từ)";
+            scoreBox.style.backgroundColor = "#e2e8f0";
+            scoreBox.style.color = "#4a5568";
+            reviewPanel.innerHTML = "Chưa có dữ liệu. Hãy gõ gì đó vào ô nhập liệu...";
+            return;
+        }
+
+        let correctCount = 0;
+        let htmlOutput = "";
+
+        userWords.forEach((uWord, index) => {
+            const oWord = originalWords[index];
+
+            if (oWord && cleanWordForCompare(uWord) === cleanWordForCompare(oWord)) {
+                correctCount++;
+                htmlOutput += `<span class="correct-word">${uWord}</span> `;
+            } else {
+                if (currentMode === "2") {
+                    // Chế độ 2: Hiện cả từ sai kèm theo từ gốc để so sánh
+                    let gợiÝ = oWord ? ` (Gốc: "${oWord}")` : " (Từ thừa)";
+                    htmlOutput += `<span class="wrong-word">${uWord}</span><span class="missing-word">${gợiÝ}</span> `;
+                } else {
+                    // Chế độ 1: Chỉ hiện từ sai có gạch nền đỏ, giấu từ đúng đi
+                    htmlOutput += `<span class="wrong-word">${uWord}</span> `;
+                }
+            }
         });
+
+        if (userWords.length < originalWords.length) {
+            htmlOutput += `<br><span class="missing-word">... Đang gõ (Còn thiếu ${originalWords.length - userWords.length} từ).</span>`;
+        }
+
+        const accuracyPercentage = Math.round((correctCount / originalWords.length) * 100);
+
+        scoreBox.innerText = `Độ chính xác hiện tại: ${accuracyPercentage}% (${correctCount}/${originalWords.length} từ)`;
+        
+        if (accuracyPercentage === 100) {
+            scoreBox.style.backgroundColor = "#d4edda";
+            scoreBox.style.color = "#155724";
+        } else if (accuracyPercentage >= 70) {
+            scoreBox.style.backgroundColor = "#fff3cd";
+            scoreBox.style.color = "#856404";
+        } else {
+            scoreBox.style.backgroundColor = "#f8d7da";
+            scoreBox.style.color = "#721c24";
+        }
+
+        reviewPanel.innerHTML = htmlOutput;
     }
 </script>
 

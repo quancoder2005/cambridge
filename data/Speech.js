@@ -66,6 +66,19 @@ window.SPEECH_ASSIGNMENTS = {
 			answers: ['<li>Yes, I do because we live in the same house. <br>→ Có, tôi chơi vì chúng tôi sống cùng nhà.</li>']
 		}
 	],
-	assignment2Questions: [],
+	assignment2Questions: [
+		{
+			prompt: `A: So, we talk about laptop, radio, phone, and camera first?\nB: Let's start with laptop. What do you think?\nA: I think it is good because it is very useful.\nB: Yes, but it is costly. What about radio?\nA: I think it's nice because it is easy to use.\nB: Yes, but it is boring. Is phone better?\nA: Maybe. It is good and fast.\nB: I agree, but it is too small. Finally, what about camera?\nA: It is beautiful, but it is heavy.\nB: So, which one is the best?\nA: I think laptop is the best because it is the most useful.\nB: I agree. It is the best choice.\n\n(đây là part 4 câu 1)` ,
+			imagePath: 'img_part4/imagp1.png',
+			imageAlt: 'Part 4 Question 1 image',
+			answers: ['<li>I think the laptop is the best because it is the most useful. <br>→ Tôi nghĩ laptop là tốt nhất vì nó hữu ích nhất.</li>']
+		},
+		{
+			prompt: `A: So, we talk about dog, cat, fish, and snake first?\nB: Let's start with dog. What do you think?\nA: I think it is good because it is very fun.\nB: Yes, but it is costly. What about cat?\nA: I think it's nice because it is cute.\nB: Yes, but it is boring. Is fish better?\nA: Maybe. It is good and fast.\nB: I agree, but it is too small. Finally, what about snake?\nA: It is cool, but it is dangerous.\nB: So, which one is the best?\nA: I think dog is the best because it is the most useful.\nB: I agree. It is the best choice.\n\n(đây là câu 2)` ,
+			imagePath: 'img_part4/imagp2.png',
+			imageAlt: 'Part 4 Question 2 image',
+			answers: ['<li>I think dog is the best because it is the most useful. <br>→ Tôi nghĩ chó là tốt nhất vì nó hữu ích nhất.</li>']
+		}
+	],
 	assignment3Content: { part1: [], part2: { title: '', answers: [] }, part3: [] }
 };
