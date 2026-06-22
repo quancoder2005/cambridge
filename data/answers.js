@@ -219,8 +219,8 @@ export default {
     "listening": {
       "part1": { "1": "A", "2": "B", "3": "B", "4": "A", "5": "B", "6": "C", "7": "C" },
       "part2": { "8": "A", "9": "C", "10": "B", "11": "B", "12": "A", "13": "C" },
-      "part3": { "14": "different building", "15": "13th September", "16": "exercises", "17": "training manager", "18": "(company) restaurant", "19": "134" },
-      "part4": { "20": "A", "21": "B", "22": "A", "23": "C", "24": "B", "25": "B" }
+      "part3": { "14": "different building", "15": "13th September", "16": "exercises", "17": "training manager", "18": "company restaurant", "19": "134" },
+      "part4": { "20": "A", "21": "B", "22": "A", "23": "C", "24": "B", "25": "B" } 
     }
   }
 };
