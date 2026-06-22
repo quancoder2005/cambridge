@@ -204,7 +204,7 @@ export default {
       "part1": { "1": "B", "2": "C", "3": "B", "4": "C", "5": "C", "6": "A", "7": "A" },
       "part2": { "8": "B", "9": "A", "10": "A", "11": "B", "12": "A", "13": "B" },
       "part3": { "14": "different building", "15": "13th September", "16": "exercises", "17": "training manager", "18": "(company) restaurant", "19": "134" },
-      "part4": { "20": "C", "21": "C", "22": "B", "23": "B", "24": "A", "25": "B" }
+      "part4": { "20": "C", "21": "C", "22": "B", "23": "B", "24": "A", "25": "C" }
     }
   },
   "test14": {
